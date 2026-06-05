@@ -40,6 +40,8 @@ PX4 SITL → UDP 14580 → MAVROS → ROS 2 → offboard_control
 ### 已知问题
 - Gazebo GUI (gzclient) 需在 `source /usr/share/gazebo/setup.sh` 后独立启动
 - PX4 用 `HEADLESS=1 make` 只起 gzserver，然后手动 `gzclient --verbose &`
+- BS 项目 ROS 库会污染 LD_LIBRARY_PATH，导致 GPU 渲染崩溃（黑屏闪退）
+- 每次启动必须 source setup.bash 剔除 BS 路径后方可 GPU 渲染
 - 详细说明见 `docs/gazebo_gui_notes.md`
 
 ### 提交
@@ -77,6 +79,24 @@ gzclient --verbose
 - Gazebo GUI (gzclient) 需 `LIBGL_ALWAYS_SOFTWARE=1` 才能稳定运行（软件渲染）
 - TL 模型若设非 static，物理引擎会因 42 个碰撞网格（21/塔 × 2 塔）而卡死
 - 详细记录见 `docs/gazebo_gui_notes.md`
+
+### 关键发现
+- Gazebo GPU 黑屏闪退根因：BS 项目 (`~/.bashrc:149`) 的 ROS 库优先级高于系统库，导致 OGRE 加载冲突 `.so` 崩溃
+- 修复：创建 `setup.bash` 剔除 BS 路径，使用 NVIDIA RTX 4060 硬件渲染
+- TL 模型若设非 static，42 个碰撞网格拖垮 ODE 物理引擎
+
+### 启动流程（修正后）
+```bash
+# 终端 1: 先 source 项目专用环境
+source /home/travis/zcw/1.2/setup.bash
+# 然后启动 PX4
+zcw-px4    # alias for: cd PX4-Autopilot && PX4_SITL_WORLD=tower HEADLESS=1 make px4_sitl gazebo-classic_iris
+
+# 终端 2: 同样 source 环境，启动 GUI
+source /home/travis/zcw/1.2/setup.bash
+zcw-gzclient    # alias for: gzclient --verbose &
+zcw-offboard    # alias for: ros2 launch zcw_offboard test_minimal.launch.py
+```
 
 ### 待做
 - [ ] 沙漠地形调研（阶段 1 遗留）

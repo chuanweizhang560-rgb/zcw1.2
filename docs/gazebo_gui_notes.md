@@ -1,7 +1,76 @@
 # Gazebo GUI 启动注意事项
 
 ## 问题
-`make px4_sitl gazebo-classic_iris` 启动的 `gzclient` 因 OGRE 渲染错误崩溃：
+Gazebo 图形界面（gzclient）黑屏闪退。
+
+## 可能原因
+
+### 原因 1：环境变量缺失
+`source /opt/ros/humble/setup.bash` 不会设置 `GAZEBO_RESOURCE_PATH` 和 `OGRE_RESOURCE_PATH`，导致 Gazebo 找不到必要的渲染资源。
+
+### 原因 2：BS 项目库冲突
+`~/.bashrc:149` 中 `source /home/travis/zcw/BS/ros2_ws/install/setup.bash` 会向 `LD_LIBRARY_PATH` 追加 BS 项目的老版本 ROS/Gazebo 库路径，优先级高于系统库，OGRE 加载冲突的 `.so` 后 GPU 渲染直接崩溃。
+
+### 原因 3：TL 模型物理过载（已修复）
+TL 模型的 42 个 STL 碰撞网格（21/塔 × 2 塔）导致 ODE 物理引擎初始化时卡死。已在模型上添加 `<static>true</static>`。
+
+## 修复方案
+
+### 使用项目专用 setup.bash
+```bash
+source /home/travis/zcw/1.2/setup.bash
+```
+该脚本会自动剔除 `*/BS/*` 路径，然后 source ROS 2 + Gazebo + PX4 + 工作空间。
+
+### 快捷命令
+```bash
+zcw-px4         # 启动 PX4 SITL（tower 场景，HEADLESS）
+zcw-gzclient    # 启动 Gazebo GUI
+zcw-offboard    # 启动 offboard 控制
+```
+
+## 正确启动步骤
+
+### 1. 推荐方式
+```bash
+# 终端 1: PX4 SITL
+source /home/travis/zcw/1.2/setup.bash
+zcw-px4
+
+# 终端 2: Gazebo GUI
+source /home/travis/zcw/1.2/setup.bash
+zcw-gzclient
+
+# 终端 3: Offboard 控制
+source /home/travis/zcw/1.2/setup.bash
+zcw-offboard
+```
+
+### 2. 手动方式
+```bash
+# 终端 1: PX4 SITL
+source /opt/ros/humble/setup.bash     # 先 ROS 2
+source /usr/share/gazebo/setup.sh     # 再 Gazebo
+cd PX4-Autopilot
+HEADLESS=1 make px4_sitl gazebo-classic_iris    # 只起 gzserver
+
+# 终端 2: Gazebo GUI
+source /opt/ros/humble/setup.bash
+source /usr/share/gazebo/setup.sh
+gzclient --verbose &
+```
+
+## 错误做法
+```bash
+# ❌ 直接用 make 启动 gzclient
+make px4_sitl gazebo-classic_iris    # 缺环境变量崩溃
+
+# ❌ BS 路径污染
+# 如果终端已经 source 过 BS 的 setup.bash，必须用 setup.bash 清理
+
+# ❌ 只 source ROS 不 source Gazebo
+source /opt/ros/humble/setup.bash
+gzclient    # 缺少 GAZEBO_RESOURCE_PATH
 ```
 [Err] [RTShaderSystem.cc:480] Unable to find shader lib.
 [Err] [RenderEngine.cc:197] Failed to initialize scene
