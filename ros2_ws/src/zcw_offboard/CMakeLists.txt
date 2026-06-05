@@ -26,8 +26,12 @@ endif()
 add_executable(offboard_control src/offboard_control.cpp)
 ament_target_dependencies(offboard_control rclcpp geometry_msgs mavros_msgs)
 
+add_executable(inspection_control src/inspection_control.cpp)
+ament_target_dependencies(inspection_control rclcpp geometry_msgs mavros_msgs)
+
 install(TARGETS
   offboard_control
+  inspection_control
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY

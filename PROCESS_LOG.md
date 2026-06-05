@@ -114,8 +114,48 @@ zcw-gzclient    # alias for: gzclient --verbose &
 zcw-offboard    # alias for: ros2 launch zcw_offboard test_minimal.launch.py
 ```
 
+## 2026-06-05 — 阶段 3c：单机风机环绕巡检
+
+### 已完成
+- 编写 `inspection_control.cpp` — 圆形环绕轨迹控制器
+  - 可配置半径、高度、角速度、环绕中心
+  - 自动 ARM → OFFBOARD → 环绕序列
+  - Yaw 始终朝向风机中心 `(cx, cy)`
+- 创建 `launch/inspection.launch.py`（含 MAVROS）
+- 修改 Iris 颜色为 `Gazebo/White`（白色，更醒目）
+- 世界文件增加 `<gui><camera>` 初始视角配置
+- 验证：无人机 ARM → 起飞 → 环绕风机飞行 ✅
+  - 高度 30m，半径 80m（围绕 (80,0)）
+  - GPS 渲染下 gzclient 稳定运行
+  - 自动追踪相机插件可用：`--gui-client-plugin libgazebo_user_camera_plugin.so`
+
+### 问题记录
+- 旧 `offboard_control` 进程残留在后台，与新 `inspection_control` 争夺 setpoint 发布，导致无人机悬停不动
+  - 修复：启动前 `killall -9 inspection_control offboard_control` 清理残存进程
+- 控制器进程因 bash 工具超时而非崩溃退出，无 error log
+  - 修复：`nohup` 启动后 `disown` 保持后台运行
+- Gazebo 软件渲染（`LIBGL_ALWAYS_SOFTWARE=1`）更稳定
+
+### 启动
+```bash
+source /home/travis/zcw/1.2/setup.bash
+# 终端 1
+cd PX4-Autopilot
+PX4_SITL_WORLD=turbine_inspection HEADLESS=1 make px4_sitl gazebo-classic_iris
+# 终端 2
+source /usr/share/gazebo/setup.sh
+LIBGL_ALWAYS_SOFTWARE=1 gzclient --verbose --gui-client-plugin libgazebo_user_camera_plugin.so
+# 终端 3
+source ros2_ws/install/local_setup.bash
+ros2 launch mavros px4.launch fcu_url:="udp://:14540@127.0.0.1:14580"
+# 终端 4
+source ros2_ws/install/local_setup.bash
+ros2 run zcw_offboard inspection_control \
+  --ros-args -p radius:=80.0 -p height:=30.0 -p angular_velocity:=0.1 \
+  -p center_x:=80.0 -p center_y:=0.0
+```
+
 ### 待做
-- [ ] 阶段 3：单机风机巡检 → 编写环绕巡检控制器
 - [ ] 沙漠地形调研（阶段 1 遗留）
 - [ ] 多无人机协同（后续阶段）
 - [ ] 电缆跟踪视觉（后续阶段）

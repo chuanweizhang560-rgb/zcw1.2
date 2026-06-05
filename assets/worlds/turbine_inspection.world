@@ -14,8 +14,16 @@
     <include>
       <uri>model://wind_turbine_70m</uri>
       <name>wind_turbine_70m</name>
-      <pose>0 0 0 0 0 0</pose>
+      <pose>80 0 0 0 0 0</pose>
     </include>
+
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>10 -15 5 0 0.2 0.8</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
 
     <physics name='default_physics' default='0' type='ode'>
       <gravity>0 0 -9.8066</gravity>

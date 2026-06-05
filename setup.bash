@@ -49,10 +49,14 @@ fi
 alias zcw-px4='cd ${ZCW_ROOT}/PX4-Autopilot && PX4_SITL_WORLD=tower HEADLESS=1 make px4_sitl gazebo-classic_iris'
 alias zcw-px4-turbine='cd ${ZCW_ROOT}/PX4-Autopilot && PX4_SITL_WORLD=turbine_inspection HEADLESS=1 make px4_sitl gazebo-classic_iris'
 alias zcw-gzclient='gzclient --verbose &'
+alias zcw-gzclient-follow='gzclient --verbose --gui-client-plugin libgazebo_user_camera_plugin.so &'
 alias zcw-offboard='ros2 launch zcw_offboard test_minimal.launch.py'
+alias zcw-inspect='ros2 run zcw_offboard inspection_control --ros-args -p radius:=80.0 -p height:=30.0 -p angular_velocity:=0.1 -p center_x:=80.0 -p center_y:=0.0'
 
 echo "ZCW 1.2 环境就绪 (RTX 4060 GPU 渲染)"
 echo "  快捷命令:"
-echo "    zcw-px4      - 启动 PX4 SITL (tower 场景)"
-echo "    zcw-gzclient - 启动 Gazebo GUI"
-echo "    zcw-offboard - 启动 offboard 控制"
+echo "    zcw-px4          - 启动 PX4 SITL (tower 场景)"
+echo "    zcw-px4-turbine  - 启动 PX4 SITL (风机场景)"
+echo "    zcw-gzclient     - 启动 Gazebo GUI"
+echo "    zcw-gzclient-follow - 启动 Gazebo GUI (自动追踪)"
+echo "    zcw-inspect      - 启动风机环绕巡检控制器"
