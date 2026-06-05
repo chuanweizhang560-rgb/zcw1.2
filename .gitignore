@@ -46,3 +46,9 @@ third_party/*/
 # Generated
 *.pyc
 .env
+
+# OMC state
+.omc/
+
+# PX4 (clone separately)
+PX4-Autopilot/

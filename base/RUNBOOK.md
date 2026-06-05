@@ -22,9 +22,9 @@
 
 | 组件 | 版本 | 状态 |
 |---|---|---|
-| ROS 2 | Humble | 待确认 |
-| Gazebo | 11 | 待确认 |
-| PX4 SITL | latest | 待确认 |
+| ROS 2 | Humble | ✅ 可用 |
+| Gazebo | 11.10.2 | ✅ 可用 |
+| PX4 SITL | latest | ❌ 待安装 |
 
 ## 下一步执行
 
