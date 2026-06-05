@@ -45,7 +45,47 @@ PX4 SITL → UDP 14580 → MAVROS → ROS 2 → offboard_control
 ### 提交
 - 阶段 2 首次提交 ✅（含闭环验证通过的完整代码和资产）
 
-### 启动方法
+### 阶段 3：TL 杆塔模型接入
+
+2026-06-05
+
+### 已完成
+- TL 模型（guiaugustoga987/TL）复制到 PX4 模型路径 ✅
+- 创建自定义世界 `assets/worlds/tower.world` ✅
+  - 含两个杆塔：tower1 @ (30,0), tower2 @ (-30, 0)
+  - 每基杆塔 21 个 STL 网格（塔身 + 6 根导线 + 支撑结构）
+- TL 模型设为 static（避免物理引擎负载过高导致渲染卡死）
+- 通过 `PX4_SITL_WORLD=tower` 环境变量切换世界
+
+### 验证 ✅
+- gzserver + tower.world 直接启动 → Gazebo GUI 显示杆塔 ✅
+- PX4 SITL + tower.world + gzclient 全栈启动 → 窗口可见 ✅
+- 已确认用户能同时看到 Iris 无人机和两基杆塔
+
+### 启动方法（带杆塔场景）
+```bash
+cd PX4-Autopilot
+PX4_SITL_WORLD=tower HEADLESS=1 make px4_sitl gazebo-classic_iris
+
+# 另一终端
+source /opt/ros/humble/setup.bash
+source /usr/share/gazebo/setup.sh
+gzclient --verbose
+```
+
+### 已知问题
+- Gazebo GUI (gzclient) 需 `LIBGL_ALWAYS_SOFTWARE=1` 才能稳定运行（软件渲染）
+- TL 模型若设非 static，物理引擎会因 42 个碰撞网格（21/塔 × 2 塔）而卡死
+- 详细记录见 `docs/gazebo_gui_notes.md`
+
+### 待做
+- [ ] 沙漠地形调研（阶段 1 遗留）
+- [ ] 多无人机协同（后续阶段）
+- [ ] 电缆跟踪视觉（后续阶段）
+
+---
+
+### 启动方法（原始 empty.world）
 ```bash
 # 终端 1: PX4 + Gazebo
 cd PX4-Autopilot && make px4_sitl gazebo-classic_iris
