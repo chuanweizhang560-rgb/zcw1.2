@@ -37,6 +37,14 @@ PX4 SITL → UDP 14580 → MAVROS → ROS 2 → offboard_control
 - [x] 切换 OFFBOARD 模式
 - [x] 发送位置 setpoint 到 10m
 
+### 已知问题
+- Gazebo GUI (gzclient) 需在 `source /usr/share/gazebo/setup.sh` 后独立启动
+- PX4 用 `HEADLESS=1 make` 只起 gzserver，然后手动 `gzclient --verbose &`
+- 详细说明见 `docs/gazebo_gui_notes.md`
+
+### 提交
+- 阶段 2 首次提交 ✅（含闭环验证通过的完整代码和资产）
+
 ### 启动方法
 ```bash
 # 终端 1: PX4 + Gazebo
