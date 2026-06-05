@@ -47,6 +47,7 @@ fi
 
 # 5. 项目别名
 alias zcw-px4='cd ${ZCW_ROOT}/PX4-Autopilot && PX4_SITL_WORLD=tower HEADLESS=1 make px4_sitl gazebo-classic_iris'
+alias zcw-px4-turbine='cd ${ZCW_ROOT}/PX4-Autopilot && PX4_SITL_WORLD=turbine_inspection HEADLESS=1 make px4_sitl gazebo-classic_iris'
 alias zcw-gzclient='gzclient --verbose &'
 alias zcw-offboard='ros2 launch zcw_offboard test_minimal.launch.py'
 

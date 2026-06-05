@@ -47,7 +47,23 @@ PX4 SITL → UDP 14580 → MAVROS → ROS 2 → offboard_control
 ### 提交
 - 阶段 2 首次提交 ✅（含闭环验证通过的完整代码和资产）
 
-### 阶段 3：TL 杆塔模型接入
+## 2026-06-05 — 阶段 3b：风机模型接入
+
+### 已完成
+- VIS4ROB 70m 风机模型（SDF+DAE）克隆到 `assets/models/wind_turbine_70m/`
+- 模型为 static（无物理碰撞，仅视觉）
+- 创建 `assets/worlds/turbine_inspection.world`（含风机 + 地面 + 光照）
+- 已同步到 PX4 模型路径和 world 路径
+- GPU 渲染下验证通过，用户确认可见
+
+### 启动
+```bash
+PX4_SITL_WORLD=turbine_inspection HEADLESS=1 make px4_sitl gazebo-classic_iris
+```
+
+---
+
+### 阶段 3a：TL 杆塔模型接入
 
 2026-06-05
 
@@ -99,6 +115,7 @@ zcw-offboard    # alias for: ros2 launch zcw_offboard test_minimal.launch.py
 ```
 
 ### 待做
+- [ ] 阶段 3：单机风机巡检 → 编写环绕巡检控制器
 - [ ] 沙漠地形调研（阶段 1 遗留）
 - [ ] 多无人机协同（后续阶段）
 - [ ] 电缆跟踪视觉（后续阶段）
