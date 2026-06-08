@@ -155,10 +155,40 @@ ros2 run zcw_offboard inspection_control \
   -p center_x:=80.0 -p center_y:=0.0
 ```
 
+## 2026-06-05 — 阶段 4.1：单机电缆巡检 — 导线中心线先验飞行
+
+### 已完成
+- 创建 `cable_inspection.world` — 两基 TL 杆塔（-30m / +30m）+ 6 条分段圆柱逼近的 catenary 导线
+- 编写 `cable_follow_control.cpp` — 航点跟随飞线控制器
+  - 抛物线近似 catenary：附着点 25m，垂度 4m
+  - 20 个航点从 tower2 飞到 tower1
+  - 自适应 QoS（BEST_EFFORT）兼容 MAVROS 位置话题
+- 验证：从 (-24, 0.6, 23.5) → (22.6, 0.5, 21.6) 沿导线路径飞行成功 ✅
+- 生成脚本 `scripts/gen_cable_world.py`（可复用生成不同参数导线）
+- setup.bash 添加 `zcw-cable-follow` 别名
+
+### 问题记录
+- MAVROS 发布 `/mavros/local_position/pose` 使用 BEST_EFFORT QoS，订阅默认 RELIABLE 不兼容 → `dist_to_wp()` 永远返回大值，控制器不前进
+  - 修复：`rclcpp::QoS(rclcpp::KeepLast(10)).best_effort()`
+
+### 启动
+```bash
+source /home/travis/zcw/1.2/setup.bash
+# 终端 1: PX4 SITL
+PX4_SITL_WORLD=cable_inspection HEADLESS=1 make px4_sitl gazebo-classic_iris
+# 终端 2: Gazebo GUI
+LIBGL_ALWAYS_SOFTWARE=1 gzclient --verbose --gui-client-plugin libgazebo_user_camera_plugin.so
+# 终端 3: MAVROS
+ros2 launch mavros px4.launch fcu_url:="udp://:14540@127.0.0.1:14580"
+# 终端 4: 飞线控制
+ros2 run zcw_offboard cable_follow_control \
+  --ros-args -p tower_x1:=-30.0 -p tower_x2:=30.0 -p cable_y:=0.6
+```
+
 ### 待做
+- [ ] 阶段 4.2：点云线拟合离线验证
+- [ ] 阶段 4.3：在线中心线跟随（含重捕获）
 - [ ] 沙漠地形调研（阶段 1 遗留）
-- [ ] 多无人机协同（后续阶段）
-- [ ] 电缆跟踪视觉（后续阶段）
 
 ---
 

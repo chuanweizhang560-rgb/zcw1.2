@@ -48,15 +48,19 @@ fi
 # 5. 项目别名
 alias zcw-px4='cd ${ZCW_ROOT}/PX4-Autopilot && PX4_SITL_WORLD=tower HEADLESS=1 make px4_sitl gazebo-classic_iris'
 alias zcw-px4-turbine='cd ${ZCW_ROOT}/PX4-Autopilot && PX4_SITL_WORLD=turbine_inspection HEADLESS=1 make px4_sitl gazebo-classic_iris'
+alias zcw-px4-cable='cd ${ZCW_ROOT}/PX4-Autopilot && PX4_SITL_WORLD=cable_inspection HEADLESS=1 make px4_sitl gazebo-classic_iris'
 alias zcw-gzclient='gzclient --verbose &'
 alias zcw-gzclient-follow='gzclient --verbose --gui-client-plugin libgazebo_user_camera_plugin.so &'
 alias zcw-offboard='ros2 launch zcw_offboard test_minimal.launch.py'
 alias zcw-inspect='ros2 run zcw_offboard inspection_control --ros-args -p radius:=80.0 -p height:=30.0 -p angular_velocity:=0.1 -p center_x:=80.0 -p center_y:=0.0'
+alias zcw-cable-follow='ros2 run zcw_offboard cable_follow_control --ros-args -p tower_x1:=-30.0 -p tower_x2:=30.0 -p cable_y:=0.6'
 
 echo "ZCW 1.2 环境就绪 (RTX 4060 GPU 渲染)"
 echo "  快捷命令:"
 echo "    zcw-px4          - 启动 PX4 SITL (tower 场景)"
 echo "    zcw-px4-turbine  - 启动 PX4 SITL (风机场景)"
+echo "    zcw-px4-cable    - 启动 PX4 SITL (电缆场景)"
 echo "    zcw-gzclient     - 启动 Gazebo GUI"
 echo "    zcw-gzclient-follow - 启动 Gazebo GUI (自动追踪)"
 echo "    zcw-inspect      - 启动风机环绕巡检控制器"
+echo "    zcw-cable-follow - 启动电缆飞线控制器"

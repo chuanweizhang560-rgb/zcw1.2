@@ -1,0 +1,84 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://asphalt_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://TL</uri>
+      <name>tower1</name>
+      <pose>30 0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://TL</uri>
+      <name>tower2</name>
+      <pose>-30 0 0 0 0 0</pose>
+    </include>
+
+    <model name="cable_n3_0_0"><static>true</static><pose>-25.000 -3.0 23.889 0 -0.218669 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.243938</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n3_0_1"><static>true</static><pose>-15.000 -3.0 22.111 0 -0.132552 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.088497</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n3_0_2"><static>true</static><pose>-5.000 -3.0 21.222 0 -0.044415 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.009872</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n3_0_3"><static>true</static><pose>5.000 -3.0 21.222 0 0.044415 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.009872</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n3_0_4"><static>true</static><pose>15.000 -3.0 22.111 0 0.132552 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.088497</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n3_0_5"><static>true</static><pose>25.000 -3.0 23.889 0 0.218669 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.243938</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n1_8_0"><static>true</static><pose>-25.000 -1.8 23.889 0 -0.218669 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.243938</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n1_8_1"><static>true</static><pose>-15.000 -1.8 22.111 0 -0.132552 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.088497</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n1_8_2"><static>true</static><pose>-5.000 -1.8 21.222 0 -0.044415 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.009872</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n1_8_3"><static>true</static><pose>5.000 -1.8 21.222 0 0.044415 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.009872</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n1_8_4"><static>true</static><pose>15.000 -1.8 22.111 0 0.132552 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.088497</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n1_8_5"><static>true</static><pose>25.000 -1.8 23.889 0 0.218669 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.243938</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n0_6_0"><static>true</static><pose>-25.000 -0.6 23.889 0 -0.218669 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.243938</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n0_6_1"><static>true</static><pose>-15.000 -0.6 22.111 0 -0.132552 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.088497</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n0_6_2"><static>true</static><pose>-5.000 -0.6 21.222 0 -0.044415 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.009872</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n0_6_3"><static>true</static><pose>5.000 -0.6 21.222 0 0.044415 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.009872</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n0_6_4"><static>true</static><pose>15.000 -0.6 22.111 0 0.132552 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.088497</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_n0_6_5"><static>true</static><pose>25.000 -0.6 23.889 0 0.218669 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.243938</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_0_6_0"><static>true</static><pose>-25.000 0.6 23.889 0 -0.218669 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.243938</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_0_6_1"><static>true</static><pose>-15.000 0.6 22.111 0 -0.132552 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.088497</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_0_6_2"><static>true</static><pose>-5.000 0.6 21.222 0 -0.044415 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.009872</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_0_6_3"><static>true</static><pose>5.000 0.6 21.222 0 0.044415 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.009872</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_0_6_4"><static>true</static><pose>15.000 0.6 22.111 0 0.132552 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.088497</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_0_6_5"><static>true</static><pose>25.000 0.6 23.889 0 0.218669 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.243938</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_1_8_0"><static>true</static><pose>-25.000 1.8 23.889 0 -0.218669 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.243938</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_1_8_1"><static>true</static><pose>-15.000 1.8 22.111 0 -0.132552 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.088497</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_1_8_2"><static>true</static><pose>-5.000 1.8 21.222 0 -0.044415 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.009872</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_1_8_3"><static>true</static><pose>5.000 1.8 21.222 0 0.044415 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.009872</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_1_8_4"><static>true</static><pose>15.000 1.8 22.111 0 0.132552 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.088497</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_1_8_5"><static>true</static><pose>25.000 1.8 23.889 0 0.218669 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.243938</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_3_0_0"><static>true</static><pose>-25.000 3.0 23.889 0 -0.218669 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.243938</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_3_0_1"><static>true</static><pose>-15.000 3.0 22.111 0 -0.132552 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.088497</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_3_0_2"><static>true</static><pose>-5.000 3.0 21.222 0 -0.044415 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.009872</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_3_0_3"><static>true</static><pose>5.000 3.0 21.222 0 0.044415 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.009872</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_3_0_4"><static>true</static><pose>15.000 3.0 22.111 0 0.132552 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.088497</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+    <model name="cable_3_0_5"><static>true</static><pose>25.000 3.0 23.889 0 0.218669 0</pose><link name="l"><visual name="v"><geometry><cylinder><radius>0.04</radius><length>10.243938</length></cylinder></geometry><material><script><name>Gazebo/Black</name><uri>file://media/materials/scripts/gazebo.material</uri></script></material></visual></link></model>
+
+    <physics name='default_physics' default='0' type='ode'>
+      <gravity>0 0 -9.8066</gravity>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>10</iters>
+          <sor>1.3</sor>
+        </solver>
+        <constraints>
+          <cfm>0</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>100</contact_max_correcting_vel>
+          <contact_surface_layer>0.001</contact_surface_layer>
+        </constraints>
+      </ode>
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>250</real_time_update_rate>
+      <magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
+    </physics>
+  </world>
+</sdf>
