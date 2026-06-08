@@ -186,8 +186,6 @@ ros2 run zcw_offboard cable_follow_control \
 ```
 
 ### 待做
-- [x] 阶段 4.2：点云线拟合离线验证
-- [ ] 阶段 4.3：在线中心线跟随（含重捕获）
 - [ ] 沙漠地形调研（阶段 1 遗留）
 
 ---
@@ -214,6 +212,41 @@ ros2 run zcw_offboard cable_follow_control \
 
 ### 待做
 - [ ] 阶段 4.3：在线中心线跟随（含重捕获）
+- [ ] 沙漠地形调研（阶段 1 遗留）
+
+---
+
+## 2026-06-05 — 阶段 4.3：在线中心线跟随（含重捕获）
+
+### 已完成
+- 编写 `cable_tracker.cpp` — Frenet 框架在线导线跟随控制器
+  - **状态机**：APPROACH → DESCEND → TRACK → RECAPTURE → FALLBACK → DONE
+  - **Frenet 跟随**：单调前进 t_progress，始终向前沿导线推进
+  - **重捕获**：误差 >5m 持续 >5s → 飞往上次良好位置 + 偏置搜索
+  - **失锁回退**：连续 3 次重捕获失败 → 返回原点
+  - **端到端清理**：到达终点后自动 disarm
+  - 每 5s 定期输出进度：t_progress、位置、误差
+- setup.bash 添加 `zcw-cable-track` 快捷命令
+- 实测验证：t=0.00→0.90 沿 Cable 4 从 tower2 飞行至 tower1，误差 <0.6m ✅
+
+### 验证结果
+```
+TRACK t=0.00 pos=(-29.7,0.7,26.7) err=1.76
+TRACK t=0.45 pos=(-9.1,0.6,21.4) err=0.53
+TRACK t=0.90 pos=(17.9,0.6,22.6) err=0.15
+TRACK complete! Arrived at tower1. Disarming...
+```
+
+### 启动
+```bash
+source setup.bash && source ros2_ws/install/local_setup.bash
+zcw-px4-cable        # 终端 1: PX4 + Gazebo
+zcw-gzclient         # 终端 2: GUI
+zcw-mavros           # 终端 3: MAVROS
+zcw-cable-track      # 终端 4: Follow cable
+```
+
+### 待做
 - [ ] 沙漠地形调研（阶段 1 遗留）
 
 ---

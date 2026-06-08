@@ -54,6 +54,7 @@ alias zcw-gzclient-follow='gzclient --verbose --gui-client-plugin libgazebo_user
 alias zcw-offboard='ros2 launch zcw_offboard test_minimal.launch.py'
 alias zcw-inspect='ros2 run zcw_offboard inspection_control --ros-args -p radius:=80.0 -p height:=30.0 -p angular_velocity:=0.1 -p center_x:=80.0 -p center_y:=0.0'
 alias zcw-cable-follow='ros2 run zcw_offboard cable_follow_control --ros-args -p tower_x1:=-30.0 -p tower_x2:=30.0 -p cable_y:=0.6'
+alias zcw-cable-track='ros2 run zcw_offboard cable_tracker --ros-args -p tower_x1:=-30.0 -p tower_x2:=30.0'
 
 echo "ZCW 1.2 环境就绪 (RTX 4060 GPU 渲染)"
 echo "  快捷命令:"
@@ -64,3 +65,4 @@ echo "    zcw-gzclient     - 启动 Gazebo GUI"
 echo "    zcw-gzclient-follow - 启动 Gazebo GUI (自动追踪)"
 echo "    zcw-inspect      - 启动风机环绕巡检控制器"
 echo "    zcw-cable-follow - 启动电缆飞线控制器"
+echo "    zcw-cable-track  - 启动电缆跟踪器 (Frenet+重捕获)"
