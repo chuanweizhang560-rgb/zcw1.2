@@ -216,6 +216,30 @@ ros2 run zcw_offboard cable_follow_control \
 
 ---
 
+## 2026-06-05 — 阶段 4.4：失锁回退
+
+### 已完成
+- 增强 cable_tracker v2 — 多级失锁回退状态机
+  - **SWEEP**：正弦横摆搜索模式，振幅逐次增大 2→4→6m
+  - **FALLBACK**：step-down 返回原点 15m→10m→5m→2m
+  - **LAND**：落地后自动 disarm
+  - 每次状态切换记录详细信息：t、err、pos
+- 正常跟踪已验证（t=0→1.00, err<0.6m）
+
+### 启动
+```bash
+source setup.bash && source ros2_ws/install/local_setup.bash
+zcw-px4-cable        # 终端 1
+zcw-gzclient         # 终端 2
+zcw-mavros           # 终端 3
+zcw-cable-track      # 终端 4 (v2 fallback)
+```
+
+### 待做
+- [ ] 沙漠地形调研（阶段 1 遗留）
+
+---
+
 ## 2026-06-05 — 阶段 4.3：在线中心线跟随（含重捕获）
 
 ### 已完成
