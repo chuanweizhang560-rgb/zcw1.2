@@ -1,0 +1,196 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="desert_windfarm">
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Desert terrain with elevation-based texture blending -->
+    <model name="desert_terrain">
+      <static>true</static>
+      <link name="terrain_link">
+        <collision name="collision">
+          <geometry>
+            <heightmap>
+              <uri>/home/travis/zcw/1.2/assets/worlds/generated/seed_99/heightmap.png</uri>
+              <size>500 500 50.0</size>
+              <pos>0 0 -1</pos>
+            </heightmap>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <heightmap>
+              <!-- Low elevation: large sand-like texture -->
+              <texture>
+                <diffuse>file://media/materials/textures/dirt_diffusespecular.png</diffuse>
+                <normal>file://media/materials/textures/dirt_normal.png</normal>
+                <size>25</size>
+              </texture>
+              <!-- Mid elevation: medium dirt -->
+              <texture>
+                <diffuse>file://media/materials/textures/dirt_diffusespecular.png</diffuse>
+                <normal>file://media/materials/textures/dirt_normal.png</normal>
+                <size>8</size>
+              </texture>
+              <!-- High elevation: rocky -->
+              <texture>
+                <diffuse>file://media/materials/textures/granite.jpg</diffuse>
+                <normal>file://media/materials/textures/dirt_normal.png</normal>
+                <size>4</size>
+              </texture>
+              <blend>
+                <min_height>0</min_height>
+                <fade_dist>4</fade_dist>
+              </blend>
+              <blend>
+                <min_height>17.5</min_height>
+                <fade_dist>6</fade_dist>
+              </blend>
+              <uri>/home/travis/zcw/1.2/assets/worlds/generated/seed_99/heightmap.png</uri>
+              <size>500 500 50.0</size>
+              <pos>0 0 -1</pos>
+            </heightmap>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Wind Turbines (central area) -->
+
+    <include>
+      <uri>model://wind_turbine_70m</uri>
+      <name>turbine_0</name>
+      <pose>-46.7 -32.0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://wind_turbine_70m</uri>
+      <name>turbine_1</name>
+      <pose>86.2 58.9 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://wind_turbine_70m</uri>
+      <name>turbine_2</name>
+      <pose>79.1 -146.0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://wind_turbine_70m</uri>
+      <name>turbine_3</name>
+      <pose>-130.6 106.3 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://wind_turbine_70m</uri>
+      <name>turbine_4</name>
+      <pose>-148.6 -146.3 0 0 0 0</pose>
+    </include>
+
+
+    <!-- Transmission Towers (separate area from turbines) -->
+
+    <include>
+      <uri>model://TL</uri>
+      <name>tower_0_a</name>
+      <pose>165.3 -135.1 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://TL</uri>
+      <name>tower_0_b</name>
+      <pose>108.4 -138.9 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://TL</uri>
+      <name>tower_1_a</name>
+      <pose>148.6 62.6 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://TL</uri>
+      <name>tower_1_b</name>
+      <pose>84.9 59.1 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://TL</uri>
+      <name>tower_2_a</name>
+      <pose>125.5 230.0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://TL</uri>
+      <name>tower_2_b</name>
+      <pose>67.7 230.0 0 0 0 0</pose>
+    </include>
+
+
+    <!-- Base Station -->
+
+    <model name="base_station">
+      <static>true</static>
+      <pose>0 -60 0 0 0 0</pose>
+      <link name="platform">
+        <visual name="platform_vis">
+          <pose>0 0 0.2 0 0 0</pose>
+          <geometry><box><size>8 8 0.4</size></box></geometry>
+          <material>
+            <ambient>0.4 0.4 0.4 1</ambient>
+            <diffuse>0.5 0.5 0.5 1</diffuse>
+          </material>
+        </visual>
+        <collision name="platform_col">
+          <geometry><box><size>8 8 0.4</size></box></geometry>
+        </collision>
+      </link>
+      <link name="shelter">
+        <pose>0 0 1.5 0 0 0</pose>
+        <visual name="shelter_vis">
+          <geometry><box><size>3 3 2.5</size></box></geometry>
+          <material>
+            <ambient>0.6 0.6 0.6 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+          </material>
+        </visual>
+        <collision name="shelter_col">
+          <geometry><box><size>3 3 2.5</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+
+
+    <!-- Physics -->
+    <physics name="default_physics" default="0" type="ode">
+      <gravity>0 0 -9.8066</gravity>
+      <ode>
+        <solver><type>quick</type><iters>10</iters><sor>1.3</sor></solver>
+        <constraints>
+          <cfm>0</cfm><erp>0.2</erp>
+          <contact_max_correcting_vel>100</contact_max_correcting_vel>
+          <contact_surface_layer>0.001</contact_surface_layer>
+        </constraints>
+      </ode>
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>250</real_time_update_rate>
+    </physics>
+
+    <!-- Wind Plugin -->
+
+    <plugin name="wind_plugin" filename="libgazebo_wind_plugin.so">
+      <frame_id>world</frame_id>
+      <wind_direction>1 0 0</wind_direction>
+      <wind_force_mean>5.0</wind_force_mean>
+      <wind_force_variance>2.0</wind_force_variance>
+
+      <wind_gust_start>5</wind_gust_start>
+      <wind_gust_duration>3</wind_gust_duration>
+      <wind_gust_velocity_factor>1.5</wind_gust_velocity_factor>
+
+    </plugin>
+
+  </world>
+</sdf>

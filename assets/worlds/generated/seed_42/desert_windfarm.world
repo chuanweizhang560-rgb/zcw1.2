@@ -1,0 +1,2010 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="desert_windfarm">
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Desert terrain with elevation-based texture blending -->
+    <model name="desert_terrain">
+      <static>true</static>
+      <link name="terrain_link">
+        <collision name="collision">
+          <geometry>
+            <heightmap>
+              <uri>/home/travis/zcw/1.2/assets/worlds/generated/seed_42/heightmap.png</uri>
+              <size>500 500 50.0</size>
+              <pos>0 0 0</pos>
+            </heightmap>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <heightmap>
+              <texture>
+                <diffuse>file://media/materials/textures/dirt_diffusespecular.png</diffuse>
+                <normal>file://media/materials/textures/dirt_normal.png</normal>
+                <size>25</size>
+              </texture>
+              <texture>
+                <diffuse>file://media/materials/textures/dirt_diffusespecular.png</diffuse>
+                <normal>file://media/materials/textures/dirt_normal.png</normal>
+                <size>10</size>
+              </texture>
+              <texture>
+                <diffuse>file://media/materials/textures/dirt_diffusespecular.png</diffuse>
+                <normal>file://media/materials/textures/dirt_normal.png</normal>
+                <size>4</size>
+              </texture>
+              <blend>
+                <min_height>0</min_height>
+                <fade_dist>3</fade_dist>
+              </blend>
+              <blend>
+                <min_height>40.0</min_height>
+                <fade_dist>5</fade_dist>
+              </blend>
+              <uri>/home/travis/zcw/1.2/assets/worlds/generated/seed_42/heightmap.png</uri>
+              <size>500 500 50.0</size>
+              <pos>0 0 0</pos>
+            </heightmap>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Wind Turbines (inline with mesh-level scale) -->
+    <model name="turbine_0">
+      <static>true</static>
+      <pose>31.4 68.5 45.5 0 0 0</pose>
+      <link name="hub_link">
+        <visual name="visual">
+          <cast_shadows>false</cast_shadows>
+          <pose>0.84 0 29.8 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_hub.dae</uri>
+              <scale>0.25 0.25 0.25</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade1">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.18 0 29.8 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.25 0.25 0.25</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade2">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.18 0 29.8 1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.25 0.25 0.25</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade3">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.18 0 29.8 -1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.25 0.25 0.25</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_tower">
+          <cast_shadows>false</cast_shadows>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_tower119.dae</uri>
+              <scale>0.25 0.25 0.25</scale>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="turbine_1">
+      <static>true</static>
+      <pose>14.1 -175.2 43.3 0 0 0</pose>
+      <link name="hub_link">
+        <visual name="visual">
+          <cast_shadows>false</cast_shadows>
+          <pose>0.68 0 23.8 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_hub.dae</uri>
+              <scale>0.20 0.20 0.20</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade1">
+          <cast_shadows>false</cast_shadows>
+          <pose>0.94 0 23.8 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.20 0.20 0.20</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade2">
+          <cast_shadows>false</cast_shadows>
+          <pose>0.94 0 23.8 1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.20 0.20 0.20</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade3">
+          <cast_shadows>false</cast_shadows>
+          <pose>0.94 0 23.8 -1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.20 0.20 0.20</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_tower">
+          <cast_shadows>false</cast_shadows>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_tower119.dae</uri>
+              <scale>0.20 0.20 0.20</scale>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="turbine_2">
+      <static>true</static>
+      <pose>-152.2 -70.4 43.1 0 0 0</pose>
+      <link name="hub_link">
+        <visual name="visual">
+          <cast_shadows>false</cast_shadows>
+          <pose>0.74 0 26.2 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_hub.dae</uri>
+              <scale>0.22 0.22 0.22</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade1">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.04 0 26.2 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.22 0.22 0.22</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade2">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.04 0 26.2 1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.22 0.22 0.22</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade3">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.04 0 26.2 -1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.22 0.22 0.22</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_tower">
+          <cast_shadows>false</cast_shadows>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_tower119.dae</uri>
+              <scale>0.22 0.22 0.22</scale>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="turbine_3">
+      <static>true</static>
+      <pose>154.4 -6.2 43.5 0 0 0</pose>
+      <link name="hub_link">
+        <visual name="visual">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.05 0 36.9 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_hub.dae</uri>
+              <scale>0.31 0.31 0.31</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade1">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.46 0 36.9 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.31 0.31 0.31</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade2">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.46 0 36.9 1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.31 0.31 0.31</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade3">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.46 0 36.9 -1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.31 0.31 0.31</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_tower">
+          <cast_shadows>false</cast_shadows>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_tower119.dae</uri>
+              <scale>0.31 0.31 0.31</scale>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="turbine_4">
+      <static>true</static>
+      <pose>166.5 160.1 42.9 0 0 0</pose>
+      <link name="hub_link">
+        <visual name="visual">
+          <cast_shadows>false</cast_shadows>
+          <pose>0.68 0 23.8 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_hub.dae</uri>
+              <scale>0.20 0.20 0.20</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade1">
+          <cast_shadows>false</cast_shadows>
+          <pose>0.94 0 23.8 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.20 0.20 0.20</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade2">
+          <cast_shadows>false</cast_shadows>
+          <pose>0.94 0 23.8 1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.20 0.20 0.20</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade3">
+          <cast_shadows>false</cast_shadows>
+          <pose>0.94 0 23.8 -1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.20 0.20 0.20</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_tower">
+          <cast_shadows>false</cast_shadows>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_tower119.dae</uri>
+              <scale>0.20 0.20 0.20</scale>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="turbine_5">
+      <static>true</static>
+      <pose>-161.7 85.9 42.2 0 0 0</pose>
+      <link name="hub_link">
+        <visual name="visual">
+          <cast_shadows>false</cast_shadows>
+          <pose>0.54 0 19.0 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_hub.dae</uri>
+              <scale>0.16 0.16 0.16</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade1">
+          <cast_shadows>false</cast_shadows>
+          <pose>0.75 0 19.0 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.16 0.16 0.16</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade2">
+          <cast_shadows>false</cast_shadows>
+          <pose>0.75 0 19.0 1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.16 0.16 0.16</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade3">
+          <cast_shadows>false</cast_shadows>
+          <pose>0.75 0 19.0 -1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.16 0.16 0.16</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_tower">
+          <cast_shadows>false</cast_shadows>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_tower119.dae</uri>
+              <scale>0.16 0.16 0.16</scale>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="turbine_6">
+      <static>true</static>
+      <pose>148.1 -187.4 44.5 0 0 0</pose>
+      <link name="hub_link">
+        <visual name="visual">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.18 0 41.6 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_hub.dae</uri>
+              <scale>0.35 0.35 0.35</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade1">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.65 0 41.6 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.35 0.35 0.35</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade2">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.65 0 41.6 1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.35 0.35 0.35</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade3">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.65 0 41.6 -1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.35 0.35 0.35</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_tower">
+          <cast_shadows>false</cast_shadows>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_tower119.dae</uri>
+              <scale>0.35 0.35 0.35</scale>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="turbine_7">
+      <static>true</static>
+      <pose>8.1 186.4 43.3 0 0 0</pose>
+      <link name="hub_link">
+        <visual name="visual">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.18 0 41.6 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_hub.dae</uri>
+              <scale>0.35 0.35 0.35</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade1">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.65 0 41.6 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.35 0.35 0.35</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade2">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.65 0 41.6 1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.35 0.35 0.35</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade3">
+          <cast_shadows>false</cast_shadows>
+          <pose>1.65 0 41.6 -1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>0.35 0.35 0.35</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_tower">
+          <cast_shadows>false</cast_shadows>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_tower119.dae</uri>
+              <scale>0.35 0.35 0.35</scale>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Transmission Towers (3x scale for visibility) -->
+    <include>
+      <uri>model://TL</uri>
+      <name>tower_0</name>
+      <pose>-148.4 -68.8 41.4 0 0 0</pose>
+      <scale>3.0 3.0 3.0</scale>
+    </include>
+    <include>
+      <uri>model://TL</uri>
+      <name>tower_1</name>
+      <pose>22.6 -24.6 41.4 0 0 0</pose>
+      <scale>3.0 3.0 3.0</scale>
+    </include>
+    <include>
+      <uri>model://TL</uri>
+      <name>tower_2</name>
+      <pose>-239.8 -151.8 41.6 0 0 0</pose>
+      <scale>3.0 3.0 3.0</scale>
+    </include>
+    <include>
+      <uri>model://TL</uri>
+      <name>tower_3</name>
+      <pose>-136.4 52.5 41.0 0 0 0</pose>
+      <scale>3.0 3.0 3.0</scale>
+    </include>
+
+    <!-- Base Station -->
+    <model name="base_station">
+      <static>true</static>
+      <pose>0 0 41.8 0 0 0</pose>
+      <link name="platform">
+        <visual name="platform_vis">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><box><size>8 8 1.0</size></box></geometry>
+          <material>
+            <ambient>0.4 0.4 0.4 1</ambient>
+            <diffuse>0.5 0.5 0.5 1</diffuse>
+          </material>
+        </visual>
+        <collision name="platform_col">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><box><size>8 8 1.0</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+
+    <!-- Preview drone on base station platform for proportion check -->
+    <include>
+      <uri>model://iris</uri>
+      <name>drone_preview</name>
+      <pose>0 0 43.1 0 0 3.14159</pose>
+    </include>
+
+    <!-- Vegetation (scattered bushes and palm trees) -->
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_0</name>
+      <pose>-174.4 38.5 43.1 0 0 0.5</pose>
+    </include>
+    <include>
+      <uri>model://palm_tree</uri>
+      <name>veg_1</name>
+      <pose>59.5 -89.5 41.9 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_2</name>
+      <pose>7.3 20.4 42.1 0 0 0.2</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_3</name>
+      <pose>121.3 83.8 40.0 0 0 5.4</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_4</name>
+      <pose>-145.0 -222.6 39.4 0 0 1.9</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_5</name>
+      <pose>70.8 36.8 42.3 0 0 0.1</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_6</name>
+      <pose>170.5 39.7 40.2 0 0 3.6</pose>
+    </include>
+    <include>
+      <uri>model://palm_tree</uri>
+      <name>veg_7</name>
+      <pose>-151.2 -89.1 41.4 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_8</name>
+      <pose>36.3 199.4 40.0 0 0 0.7</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_9</name>
+      <pose>85.0 -79.7 42.5 0 0 4.9</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_10</name>
+      <pose>-67.8 21.4 43.9 0 0 5.1</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_11</name>
+      <pose>-173.1 83.7 41.4 0 0 0.6</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_12</name>
+      <pose>-7.5 -196.3 41.5 0 0 0.8</pose>
+    </include>
+    <include>
+      <uri>model://palm_tree</uri>
+      <name>veg_13</name>
+      <pose>-109.4 -62.7 43.9 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://palm_tree</uri>
+      <name>veg_14</name>
+      <pose>113.2 -27.5 44.7 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_15</name>
+      <pose>18.2 43.1 41.7 0 0 4.5</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_16</name>
+      <pose>203.4 169.7 41.0 0 0 2.9</pose>
+    </include>
+    <include>
+      <uri>model://palm_tree</uri>
+      <name>veg_17</name>
+      <pose>-226.8 -75.1 44.7 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_18</name>
+      <pose>-168.6 -113.0 42.1 0 0 4.1</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_19</name>
+      <pose>5.2 -62.1 40.4 0 0 1.6</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_20</name>
+      <pose>159.5 -169.5 43.9 0 0 1.4</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_21</name>
+      <pose>-106.2 -207.4 40.0 0 0 5.1</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_22</name>
+      <pose>-168.0 199.6 40.4 0 0 3.3</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_23</name>
+      <pose>-172.7 143.7 39.4 0 0 4.8</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_24</name>
+      <pose>198.3 -198.8 44.7 0 0 2.3</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_25</name>
+      <pose>108.8 114.0 40.6 0 0 3.2</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_26</name>
+      <pose>140.9 18.6 39.8 0 0 5.8</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_27</name>
+      <pose>90.6 -105.3 44.5 0 0 1.2</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_28</name>
+      <pose>-44.2 -188.7 41.2 0 0 4.5</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_29</name>
+      <pose>-198.0 -46.7 43.9 0 0 0.5</pose>
+    </include>
+    <include>
+      <uri>model://palm_tree</uri>
+      <name>veg_30</name>
+      <pose>-169.5 48.3 42.3 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_31</name>
+      <pose>-59.6 -158.6 42.9 0 0 0.7</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_32</name>
+      <pose>83.7 8.3 43.7 0 0 1.2</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_33</name>
+      <pose>-142.2 -68.1 42.7 0 0 3.3</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_34</name>
+      <pose>-143.4 -130.8 40.4 0 0 0.4</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_35</name>
+      <pose>-129.7 227.1 44.5 0 0 0.5</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_36</name>
+      <pose>-155.4 83.9 41.7 0 0 0.8</pose>
+    </include>
+    <include>
+      <uri>model://palm_tree</uri>
+      <name>veg_37</name>
+      <pose>224.3 -68.9 42.5 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_38</name>
+      <pose>-135.8 -140.8 40.2 0 0 3.7</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_39</name>
+      <pose>-223.6 10.4 43.7 0 0 5.2</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_40</name>
+      <pose>164.6 -100.7 41.9 0 0 3.9</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_41</name>
+      <pose>-13.6 161.2 43.5 0 0 1.7</pose>
+    </include>
+    <include>
+      <uri>model://palm_tree</uri>
+      <name>veg_42</name>
+      <pose>153.4 -113.0 42.3 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_43</name>
+      <pose>-163.9 113.5 41.4 0 0 0.0</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_44</name>
+      <pose>-178.6 224.3 42.1 0 0 4.9</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_45</name>
+      <pose>-134.5 115.7 41.7 0 0 5.6</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_46</name>
+      <pose>184.0 -11.7 42.5 0 0 0.0</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_47</name>
+      <pose>-31.8 153.3 43.3 0 0 5.9</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_48</name>
+      <pose>-75.8 -164.3 41.4 0 0 5.9</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_49</name>
+      <pose>-45.6 -165.5 43.1 0 0 5.2</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_50</name>
+      <pose>-157.4 166.0 39.4 0 0 1.6</pose>
+    </include>
+    <include>
+      <uri>model://palm_tree</uri>
+      <name>veg_51</name>
+      <pose>-36.0 -149.7 43.9 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_52</name>
+      <pose>-64.9 84.3 43.1 0 0 1.6</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_53</name>
+      <pose>-64.8 -195.5 40.4 0 0 6.0</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_54</name>
+      <pose>147.3 -200.4 43.5 0 0 1.1</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_55</name>
+      <pose>-120.2 -51.8 44.3 0 0 5.1</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_56</name>
+      <pose>29.8 -118.7 41.5 0 0 3.0</pose>
+    </include>
+    <include>
+      <uri>model://palm_tree</uri>
+      <name>veg_57</name>
+      <pose>45.3 -43.3 41.5 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_58</name>
+      <pose>41.7 157.5 39.6 0 0 5.4</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_59</name>
+      <pose>-151.8 197.1 42.3 0 0 0.3</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_60</name>
+      <pose>-84.7 -166.1 41.4 0 0 0.2</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_61</name>
+      <pose>188.2 18.3 41.5 0 0 2.7</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_62</name>
+      <pose>56.4 -195.2 43.3 0 0 3.1</pose>
+    </include>
+    <include>
+      <uri>model://palm_tree</uri>
+      <name>veg_63</name>
+      <pose>-169.0 -76.0 44.1 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_64</name>
+      <pose>-206.3 158.1 39.8 0 0 0.7</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_65</name>
+      <pose>142.1 -21.9 43.3 0 0 2.0</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_66</name>
+      <pose>32.7 67.9 44.3 0 0 4.1</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_67</name>
+      <pose>-53.0 114.7 44.3 0 0 5.7</pose>
+    </include>
+    <include>
+      <uri>model://palm_tree</uri>
+      <name>veg_68</name>
+      <pose>27.3 183.6 41.5 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_69</name>
+      <pose>-142.8 128.9 41.4 0 0 0.3</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_70</name>
+      <pose>-34.4 4.1 41.7 0 0 2.9</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_71</name>
+      <pose>72.1 21.3 42.5 0 0 2.1</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_72</name>
+      <pose>-77.3 -65.0 42.7 0 0 0.8</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_73</name>
+      <pose>-183.9 -51.6 44.5 0 0 0.4</pose>
+    </include>
+    <include>
+      <uri>model://bush_0</uri>
+      <name>veg_74</name>
+      <pose>-113.6 70.7 42.7 0 0 3.0</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_75</name>
+      <pose>-49.1 172.1 43.7 0 0 5.6</pose>
+    </include>
+    <include>
+      <uri>model://bush_2</uri>
+      <name>veg_76</name>
+      <pose>-69.6 126.0 42.9 0 0 4.0</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_77</name>
+      <pose>130.7 -111.9 44.3 0 0 4.2</pose>
+    </include>
+    <include>
+      <uri>model://bush_3</uri>
+      <name>veg_78</name>
+      <pose>202.5 154.2 39.6 0 0 1.2</pose>
+    </include>
+    <include>
+      <uri>model://bush_1</uri>
+      <name>veg_79</name>
+      <pose>210.8 -4.3 42.5 0 0 4.0</pose>
+    </include>
+
+    <!-- Rocks (inline models with mesh-level scale, Gazebo 11 compat) -->
+    <model name="rock_0">
+      <static>true</static>
+      <pose>-62.8 -25.8 43.1 0 0 2.59</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_6/meshes/rock_6.obj</uri><scale>1.17 1.17 1.17</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_6/meshes/rock_6.obj</uri><scale>1.17 1.17 1.17</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_1">
+      <static>true</static>
+      <pose>-54.8 145.1 44.1 0 0 2.06</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>3.36 3.36 3.36</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>3.36 3.36 3.36</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_2">
+      <static>true</static>
+      <pose>-195.3 171.1 40.2 0 0 5.38</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_7/meshes/rock_7.obj</uri><scale>0.47 0.47 0.47</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_7/meshes/rock_7.obj</uri><scale>0.47 0.47 0.47</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_3">
+      <static>true</static>
+      <pose>114.5 26.3 41.6 0 0 2.52</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_6/meshes/rock_6.obj</uri><scale>4.42 4.42 4.42</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_6/meshes/rock_6.obj</uri><scale>4.42 4.42 4.42</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_4">
+      <static>true</static>
+      <pose>-174.0 -203.9 39.2 0 0 6.13</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_6/meshes/rock_6.obj</uri><scale>2.59 2.59 2.59</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_6/meshes/rock_6.obj</uri><scale>2.59 2.59 2.59</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_5">
+      <static>true</static>
+      <pose>48.0 -43.6 42.4 0 0 1.51</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_7/meshes/rock_7.obj</uri><scale>4.72 4.72 4.72</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_7/meshes/rock_7.obj</uri><scale>4.72 4.72 4.72</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_6">
+      <static>true</static>
+      <pose>-152.8 -149.1 41.0 0 0 4.51</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>1.29 1.29 1.29</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>1.29 1.29 1.29</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_7">
+      <static>true</static>
+      <pose>-22.6 149.5 44.3 0 0 5.67</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>0.44 0.44 0.44</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>0.44 0.44 0.44</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_8">
+      <static>true</static>
+      <pose>-140.6 -29.2 48.6 0 0 1.78</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>4.13 4.13 4.13</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>4.13 4.13 4.13</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_9">
+      <static>true</static>
+      <pose>-27.4 -9.0 42.2 0 0 5.80</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_1/meshes/rock_1.obj</uri><scale>3.10 3.10 3.10</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_1/meshes/rock_1.obj</uri><scale>3.10 3.10 3.10</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_10">
+      <static>true</static>
+      <pose>-20.3 -219.5 39.6 0 0 4.14</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>1.00 1.00 1.00</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>1.00 1.00 1.00</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_11">
+      <static>true</static>
+      <pose>-48.5 -231.3 41.6 0 0 1.07</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>2.11 2.11 2.11</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>2.11 2.11 2.11</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_12">
+      <static>true</static>
+      <pose>31.5 -177.3 43.5 0 0 1.92</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>0.29 0.29 0.29</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>0.29 0.29 0.29</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_13">
+      <static>true</static>
+      <pose>33.6 -33.8 43.1 0 0 4.93</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>2.14 2.14 2.14</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>2.14 2.14 2.14</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_14">
+      <static>true</static>
+      <pose>153.6 201.0 43.7 0 0 5.00</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>2.76 2.76 2.76</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>2.76 2.76 2.76</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_15">
+      <static>true</static>
+      <pose>133.2 -174.4 45.5 0 0 1.68</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>3.17 3.17 3.17</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>3.17 3.17 3.17</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_16">
+      <static>true</static>
+      <pose>-141.2 184.5 41.2 0 0 2.22</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>2.73 2.73 2.73</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>2.73 2.73 2.73</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_17">
+      <static>true</static>
+      <pose>199.0 -27.6 43.3 0 0 5.70</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>0.52 0.52 0.52</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>0.52 0.52 0.52</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_18">
+      <static>true</static>
+      <pose>107.3 25.5 42.5 0 0 3.78</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>4.05 4.05 4.05</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>4.05 4.05 4.05</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_19">
+      <static>true</static>
+      <pose>-199.5 111.9 41.2 0 0 0.04</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>1.36 1.36 1.36</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>1.36 1.36 1.36</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_20">
+      <static>true</static>
+      <pose>-186.0 74.4 42.9 0 0 1.41</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>4.16 4.16 4.16</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>4.16 4.16 4.16</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_21">
+      <static>true</static>
+      <pose>-74.7 -19.2 44.9 0 0 4.27</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>2.00 2.00 2.00</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>2.00 2.00 2.00</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_22">
+      <static>true</static>
+      <pose>-104.7 -2.2 47.1 0 0 1.52</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>1.89 1.89 1.89</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>1.89 1.89 1.89</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_23">
+      <static>true</static>
+      <pose>-113.4 24.2 37.8 0 0 4.84</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>1.13 1.13 1.13</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>1.13 1.13 1.13</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_24">
+      <static>true</static>
+      <pose>112.1 112.0 41.0 0 0 0.70</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>4.04 4.04 4.04</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>4.04 4.04 4.04</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_25">
+      <static>true</static>
+      <pose>233.3 13.9 44.3 0 0 1.41</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_7/meshes/rock_7.obj</uri><scale>0.20 0.20 0.20</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_7/meshes/rock_7.obj</uri><scale>0.20 0.20 0.20</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_26">
+      <static>true</static>
+      <pose>45.3 57.0 42.2 0 0 3.52</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>3.74 3.74 3.74</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>3.74 3.74 3.74</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_27">
+      <static>true</static>
+      <pose>7.3 -108.2 4.1 0 0 2.52</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_6/meshes/rock_6.obj</uri><scale>0.51 0.51 0.51</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_6/meshes/rock_6.obj</uri><scale>0.51 0.51 0.51</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_28">
+      <static>true</static>
+      <pose>135.5 -184.8 45.1 0 0 4.62</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_7/meshes/rock_7.obj</uri><scale>0.50 0.50 0.50</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_7/meshes/rock_7.obj</uri><scale>0.50 0.50 0.50</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_29">
+      <static>true</static>
+      <pose>117.5 -63.0 42.0 0 0 4.05</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_1/meshes/rock_1.obj</uri><scale>1.06 1.06 1.06</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_1/meshes/rock_1.obj</uri><scale>1.06 1.06 1.06</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_30">
+      <static>true</static>
+      <pose>162.5 -34.1 44.9 0 0 6.26</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>2.09 2.09 2.09</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>2.09 2.09 2.09</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_31">
+      <static>true</static>
+      <pose>-45.2 -43.9 41.6 0 0 5.84</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>2.71 2.71 2.71</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>2.71 2.71 2.71</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_32">
+      <static>true</static>
+      <pose>177.1 -69.4 38.2 0 0 5.88</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>1.02 1.02 1.02</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>1.02 1.02 1.02</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_33">
+      <static>true</static>
+      <pose>-145.0 105.1 42.4 0 0 4.75</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>1.16 1.16 1.16</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>1.16 1.16 1.16</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_34">
+      <static>true</static>
+      <pose>-31.3 175.5 44.7 0 0 2.59</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>3.62 3.62 3.62</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>3.62 3.62 3.62</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_35">
+      <static>true</static>
+      <pose>-24.6 99.4 45.9 0 0 3.60</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_0/meshes/rock_0.obj</uri><scale>1.07 1.07 1.07</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_0/meshes/rock_0.obj</uri><scale>1.07 1.07 1.07</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_36">
+      <static>true</static>
+      <pose>101.5 52.0 42.4 0 0 2.73</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>0.62 0.62 0.62</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>0.62 0.62 0.62</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_37">
+      <static>true</static>
+      <pose>-22.9 -164.6 44.1 0 0 4.19</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_0/meshes/rock_0.obj</uri><scale>0.30 0.30 0.30</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_0/meshes/rock_0.obj</uri><scale>0.30 0.30 0.30</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_38">
+      <static>true</static>
+      <pose>27.4 63.4 44.9 0 0 1.64</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>0.97 0.97 0.97</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>0.97 0.97 0.97</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_39">
+      <static>true</static>
+      <pose>11.9 225.4 42.7 0 0 3.62</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>2.94 2.94 2.94</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>2.94 2.94 2.94</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_40">
+      <static>true</static>
+      <pose>-164.5 -124.1 41.8 0 0 6.17</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>2.02 2.02 2.02</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>2.02 2.02 2.02</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_41">
+      <static>true</static>
+      <pose>118.1 145.6 38.4 0 0 2.85</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_0/meshes/rock_0.obj</uri><scale>0.79 0.79 0.79</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_0/meshes/rock_0.obj</uri><scale>0.79 0.79 0.79</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_42">
+      <static>true</static>
+      <pose>-80.0 39.2 45.1 0 0 4.57</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>0.22 0.22 0.22</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_2/meshes/rock_2.obj</uri><scale>0.22 0.22 0.22</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_43">
+      <static>true</static>
+      <pose>-89.3 -212.5 41.8 0 0 2.88</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>1.35 1.35 1.35</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>1.35 1.35 1.35</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_44">
+      <static>true</static>
+      <pose>40.1 -229.5 45.3 0 0 4.24</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_6/meshes/rock_6.obj</uri><scale>4.09 4.09 4.09</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_6/meshes/rock_6.obj</uri><scale>4.09 4.09 4.09</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_45">
+      <static>true</static>
+      <pose>-57.1 -184.6 41.6 0 0 3.96</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_6/meshes/rock_6.obj</uri><scale>4.60 4.60 4.60</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_6/meshes/rock_6.obj</uri><scale>4.60 4.60 4.60</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_46">
+      <static>true</static>
+      <pose>86.8 -182.2 47.3 0 0 0.76</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>2.31 2.31 2.31</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>2.31 2.31 2.31</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_47">
+      <static>true</static>
+      <pose>163.5 -81.4 42.9 0 0 1.61</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>0.69 0.69 0.69</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>0.69 0.69 0.69</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_48">
+      <static>true</static>
+      <pose>207.8 191.0 43.3 0 0 0.08</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_6/meshes/rock_6.obj</uri><scale>0.94 0.94 0.94</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_6/meshes/rock_6.obj</uri><scale>0.94 0.94 0.94</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_49">
+      <static>true</static>
+      <pose>-154.1 -31.7 48.0 0 0 4.17</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>1.05 1.05 1.05</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>1.05 1.05 1.05</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_50">
+      <static>true</static>
+      <pose>-216.4 -73.6 45.1 0 0 4.87</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_1/meshes/rock_1.obj</uri><scale>0.47 0.47 0.47</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_1/meshes/rock_1.obj</uri><scale>0.47 0.47 0.47</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_51">
+      <static>true</static>
+      <pose>57.1 -124.3 46.9 0 0 0.63</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_0/meshes/rock_0.obj</uri><scale>0.20 0.20 0.20</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_0/meshes/rock_0.obj</uri><scale>0.20 0.20 0.20</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_52">
+      <static>true</static>
+      <pose>171.9 163.5 42.9 0 0 2.32</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_1/meshes/rock_1.obj</uri><scale>0.39 0.39 0.39</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_1/meshes/rock_1.obj</uri><scale>0.39 0.39 0.39</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_53">
+      <static>true</static>
+      <pose>161.4 78.7 40.0 0 0 5.65</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_0/meshes/rock_0.obj</uri><scale>3.15 3.15 3.15</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_0/meshes/rock_0.obj</uri><scale>3.15 3.15 3.15</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_54">
+      <static>true</static>
+      <pose>-112.1 212.7 43.3 0 0 6.00</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>0.61 0.61 0.61</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>0.61 0.61 0.61</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_55">
+      <static>true</static>
+      <pose>91.4 -27.3 45.7 0 0 2.97</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_1/meshes/rock_1.obj</uri><scale>3.31 3.31 3.31</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_1/meshes/rock_1.obj</uri><scale>3.31 3.31 3.31</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_56">
+      <static>true</static>
+      <pose>200.0 202.2 44.1 0 0 2.26</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>0.52 0.52 0.52</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_5/meshes/rock_5.obj</uri><scale>0.52 0.52 0.52</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_57">
+      <static>true</static>
+      <pose>50.5 135.1 42.0 0 0 0.27</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>3.61 3.61 3.61</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_3/meshes/rock_3.obj</uri><scale>3.61 3.61 3.61</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_58">
+      <static>true</static>
+      <pose>104.4 -193.1 46.5 0 0 2.18</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_1/meshes/rock_1.obj</uri><scale>0.37 0.37 0.37</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_1/meshes/rock_1.obj</uri><scale>0.37 0.37 0.37</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="rock_59">
+      <static>true</static>
+      <pose>-146.6 -116.9 42.4 0 0 1.10</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>0.50 0.50 0.50</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>model://desert_rocks/rock_4/meshes/rock_4.obj</uri><scale>0.50 0.50 0.50</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+
+    <!-- Physics -->
+    <physics name="default_physics" default="0" type="ode">
+      <gravity>0 0 -9.8066</gravity>
+      <ode>
+        <solver><type>quick</type><iters>10</iters><sor>1.3</sor></solver>
+        <constraints>
+          <cfm>0</cfm><erp>0.2</erp>
+          <contact_max_correcting_vel>100</contact_max_correcting_vel>
+          <contact_surface_layer>0.001</contact_surface_layer>
+        </constraints>
+      </ode>
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>250</real_time_update_rate>
+    </physics>
+
+    <!-- Wind Plugin -->
+    <plugin name="wind_plugin" filename="libgazebo_wind_plugin.so">
+      <frame_id>world</frame_id>
+      <wind_direction>1 0 0</wind_direction>
+      <wind_force_mean>5.0</wind_force_mean>
+      <wind_force_variance>2.0</wind_force_variance>
+      <wind_gust_start>5</wind_gust_start>
+      <wind_gust_duration>3</wind_gust_duration>
+      <wind_gust_velocity_factor>1.5</wind_gust_velocity_factor>
+    </plugin>
+  </world>
+</sdf>

@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="rock_0">
+    <static>true</static>
+    <link name="link">
+      <visual name="visual">
+        <geometry><mesh><uri>model://desert_rocks/rock_0/meshes/rock_0.obj</uri></mesh></geometry>
+        <material>
+          <ambient>0.32 0.27 0.21 1</ambient>
+          <diffuse>0.32 0.27 0.21 1</diffuse>
+          <specular>0.02 0.02 0.02 1</specular>
+        </material>
+      </visual>
+      <collision name="collision">
+        <geometry><mesh><uri>model://desert_rocks/rock_0/meshes/rock_0.obj</uri></mesh></geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

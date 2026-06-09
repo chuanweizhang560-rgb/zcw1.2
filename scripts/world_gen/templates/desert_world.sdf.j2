@@ -1,0 +1,224 @@
+{% macro wind_turbine(name, x, y, z, scale) %}
+    <model name="{{ name }}">
+      <static>true</static>
+      <pose>{{ '%.1f' | format(x) }} {{ '%.1f' | format(y) }} {{ '%.1f' | format(z) }} 0 0 0</pose>
+      <link name="hub_link">
+        <visual name="visual">
+          <cast_shadows>false</cast_shadows>
+          <pose>{{ '%.2f' | format(3.38 * scale) }} 0 {{ '%.1f' | format(119 * scale) }} 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_hub.dae</uri>
+              <scale>{{ '%.2f' | format(scale) }} {{ '%.2f' | format(scale) }} {{ '%.2f' | format(scale) }}</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade1">
+          <cast_shadows>false</cast_shadows>
+          <pose>{{ '%.2f' | format(4.71 * scale) }} 0 {{ '%.1f' | format(119 * scale) }} 3.14159 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>{{ '%.2f' | format(scale) }} {{ '%.2f' | format(scale) }} {{ '%.2f' | format(scale) }}</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade2">
+          <cast_shadows>false</cast_shadows>
+          <pose>{{ '%.2f' | format(4.71 * scale) }} 0 {{ '%.1f' | format(119 * scale) }} 1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>{{ '%.2f' | format(scale) }} {{ '%.2f' | format(scale) }} {{ '%.2f' | format(scale) }}</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_blade3">
+          <cast_shadows>false</cast_shadows>
+          <pose>{{ '%.2f' | format(4.71 * scale) }} 0 {{ '%.1f' | format(119 * scale) }} -1.0472 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_blade.dae</uri>
+              <scale>{{ '%.2f' | format(scale) }} {{ '%.2f' | format(scale) }} {{ '%.2f' | format(scale) }}</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name="visual_tower">
+          <cast_shadows>false</cast_shadows>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://wind_turbine_70m/meshes/wind_turbine_tower119.dae</uri>
+              <scale>{{ '%.2f' | format(scale) }} {{ '%.2f' | format(scale) }} {{ '%.2f' | format(scale) }}</scale>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+{%- endmacro %}
+{%- macro rock_inline(name, x, y, z, scale, yaw, mesh_uri) %}
+    <model name="{{ name }}">
+      <static>true</static>
+      <pose>{{ '%.1f' | format(x) }} {{ '%.1f' | format(y) }} {{ '%.1f' | format(z) }} 0 0 {{ '%.2f' | format(yaw) }}</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><mesh><uri>{{ mesh_uri }}</uri><scale>{{ '%.2f' | format(scale) }} {{ '%.2f' | format(scale) }} {{ '%.2f' | format(scale) }}</scale></mesh></geometry>
+          <material>
+            <ambient>0.32 0.27 0.21 1</ambient>
+            <diffuse>0.32 0.27 0.21 1</diffuse>
+            <specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><mesh><uri>{{ mesh_uri }}</uri><scale>{{ '%.2f' | format(scale) }} {{ '%.2f' | format(scale) }} {{ '%.2f' | format(scale) }}</scale></mesh></geometry>
+        </collision>
+      </link>
+    </model>
+{%- endmacro %}
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="{{ world_name }}">
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Desert terrain with elevation-based texture blending -->
+    <model name="desert_terrain">
+      <static>true</static>
+      <link name="terrain_link">
+        <collision name="collision">
+          <geometry>
+            <heightmap>
+              <uri>{{ terrain_png_path }}</uri>
+              <size>{{ '%.0f' | format(terrain_size[0]) }} {{ '%.0f' | format(terrain_size[1]) }} {{ '%.1f' | format(terrain_size[2]) }}</size>
+              <pos>0 0 0</pos>
+            </heightmap>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <heightmap>
+              <texture>
+                <diffuse>file://media/materials/textures/dirt_diffusespecular.png</diffuse>
+                <normal>file://media/materials/textures/dirt_normal.png</normal>
+                <size>25</size>
+              </texture>
+              <texture>
+                <diffuse>file://media/materials/textures/dirt_diffusespecular.png</diffuse>
+                <normal>file://media/materials/textures/dirt_normal.png</normal>
+                <size>10</size>
+              </texture>
+              <texture>
+                <diffuse>file://media/materials/textures/dirt_diffusespecular.png</diffuse>
+                <normal>file://media/materials/textures/dirt_normal.png</normal>
+                <size>4</size>
+              </texture>
+              <blend>
+                <min_height>0</min_height>
+                <fade_dist>3</fade_dist>
+              </blend>
+              <blend>
+                <min_height>{{ '%.1f' | format(terrain_size[2] * 0.8) }}</min_height>
+                <fade_dist>5</fade_dist>
+              </blend>
+              <uri>{{ terrain_png_path }}</uri>
+              <size>{{ '%.0f' | format(terrain_size[0]) }} {{ '%.0f' | format(terrain_size[1]) }} {{ '%.1f' | format(terrain_size[2]) }}</size>
+              <pos>0 0 0</pos>
+            </heightmap>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Wind Turbines (inline with mesh-level scale) -->
+{% for t in turbines %}
+{{ wind_turbine('turbine_' ~ loop.index0, t.x, t.y, t.z, t.scale) }}
+{% endfor %}
+
+    <!-- Transmission Towers (3x scale for visibility) -->
+{% for tower in towers %}
+    <include>
+      <uri>model://TL</uri>
+      <name>{{ tower.name }}</name>
+      <pose>{{ '%.1f' | format(tower.x) }} {{ '%.1f' | format(tower.y) }} {{ '%.1f' | format(tower.z) }} 0 0 0</pose>
+      <scale>3.0 3.0 3.0</scale>
+    </include>
+{% endfor %}
+
+    <!-- Base Station -->
+{% if base_station %}
+    <model name="base_station">
+      <static>true</static>
+      <pose>{{ base_station.x }} {{ base_station.y }} {{ base_station.z }} 0 0 0</pose>
+      <link name="platform">
+        <visual name="platform_vis">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><box><size>8 8 1.0</size></box></geometry>
+          <material>
+            <ambient>0.4 0.4 0.4 1</ambient>
+            <diffuse>0.5 0.5 0.5 1</diffuse>
+          </material>
+        </visual>
+        <collision name="platform_col">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><box><size>8 8 1.0</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+{% endif %}
+
+    <!-- Preview drone on base station platform for proportion check -->
+{% if base_station %}
+    <include>
+      <uri>model://iris</uri>
+      <name>drone_preview</name>
+      <pose>{{ base_station.x }} {{ base_station.y }} {{ '%.1f' | format(base_station.z + 1.3) }} 0 0 3.14159</pose>
+    </include>
+{% endif %}
+
+    <!-- Vegetation (scattered bushes and palm trees) -->
+{% for v in vegetation %}
+    <include>
+      <uri>model://{{ v.model }}</uri>
+      <name>{{ v.name }}</name>
+      <pose>{{ '%.1f' | format(v.x) }} {{ '%.1f' | format(v.y) }} {{ '%.1f' | format(v.z) }} 0 0 {% if v.model == 'palm_tree' %}0{% else %}{{ '%.1f' | format(v.yaw) }}{% endif %}</pose>
+    </include>
+{% endfor %}
+
+    <!-- Rocks (inline models with mesh-level scale, Gazebo 11 compat) -->
+{% for rock in rocks %}
+{{ rock_inline(rock.name, rock.x, rock.y, rock.z, rock.scale, rock.yaw, rock.mesh_uri) }}
+{% endfor %}
+
+    <!-- Physics -->
+    <physics name="default_physics" default="0" type="ode">
+      <gravity>{{ physics.gravity[0] }} {{ physics.gravity[1] }} {{ physics.gravity[2] }}</gravity>
+      <ode>
+        <solver><type>quick</type><iters>10</iters><sor>1.3</sor></solver>
+        <constraints>
+          <cfm>0</cfm><erp>0.2</erp>
+          <contact_max_correcting_vel>100</contact_max_correcting_vel>
+          <contact_surface_layer>0.001</contact_surface_layer>
+        </constraints>
+      </ode>
+      <max_step_size>{{ physics.max_step_size }}</max_step_size>
+      <real_time_factor>{{ physics.real_time_factor }}</real_time_factor>
+      <real_time_update_rate>250</real_time_update_rate>
+    </physics>
+
+    <!-- Wind Plugin -->
+{% if wind.enabled %}
+    <plugin name="wind_plugin" filename="libgazebo_wind_plugin.so">
+      <frame_id>world</frame_id>
+      <wind_direction>{{ wind.direction[0] }} {{ wind.direction[1] }} {{ wind.direction[2] }}</wind_direction>
+      <wind_force_mean>{{ wind.mean_speed }}</wind_force_mean>
+      <wind_force_variance>{{ wind.variance }}</wind_force_variance>
+{% if wind.gusts %}
+      <wind_gust_start>5</wind_gust_start>
+      <wind_gust_duration>3</wind_gust_duration>
+      <wind_gust_velocity_factor>1.5</wind_gust_velocity_factor>
+{% endif %}
+    </plugin>
+{% endif %}
+  </world>
+</sdf>

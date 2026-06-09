@@ -1,0 +1,65 @@
+# Desert Wind Farm Scene Configuration
+# Change seed for a completely different scene.
+seed: 42
+output_dir: "/home/travis/zcw/1.2/assets/worlds/generated"
+world_name: "desert_windfarm"
+
+# === Terrain ===
+terrain:
+  size_m: [500, 500]
+  height_max: 50.0
+  resolution: 257
+  flat_center_radius: 0.05
+
+# === Wind Turbines ===
+turbines:
+  count: 8
+  placement: "random"
+  placement_area: 0.75
+  min_spacing: 120
+  scale_range: [0.15, 0.35]
+  boundary_margin: 60
+  min_elevation_percentile: 0.25
+
+# === Transmission Line ===
+transmission:
+  enabled: true
+  count: 4
+  min_spacing: 120
+  z_offset: 0.0
+
+# === Vegetation ===
+vegetation:
+  enabled: true
+  count: 80
+  min_spacing: 8
+  models: ["bush_0", "bush_1", "bush_2", "bush_3", "palm_tree"]
+  min_elevation_percentile: 0.15
+  max_elevation_percentile: 0.85
+  z_offset: -1.0
+
+# === Rocks ===
+rocks:
+  enabled: true
+  count: 60
+  min_size: 1.0
+  max_size: 25.0
+
+# === Base Station ===
+base_station:
+  enabled: true
+  position: [0, 0]
+
+# === Wind ===
+wind:
+  enabled: true
+  mean_speed: 5.0
+  direction: [1, 0, 0]
+  variance: 2.0
+  gusts: true
+
+# === Physics ===
+physics:
+  gravity: [0, 0, -9.8066]
+  max_step_size: 0.004
+  real_time_factor: 1.0
