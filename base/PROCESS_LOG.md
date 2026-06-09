@@ -298,9 +298,20 @@ ros2 launch zcw_offboard test_minimal.launch.py
 - 关键 Bug 记录：Gazebo 11 忽略 `<include><scale>`，须用 inline `<mesh><scale>`
 - 提交: 33c327e (已推送)
 
+## 2026-06-09 — 全栈集成测试（沙漠 seed 42）
+
+- 在 seed 42 沙漠世界（中心海拔 ~42m 高地）完成 4 机全栈测试
+- 启动流程：gzserver → spawn 4 Iris → 4×PX4(LOCKSTEP=0) → 4×MAVROS → controllers
+- 测试结果：
+  - uav1(EXPLORE): CONN OFFBOARD ARM ✅ 探索航点
+  - uav2(RELAY): CONN OFFBOARD ARM ✅ 跟随 uav1
+  - uav3(EXPLORE): CONN OFFBOARD ARM ✅ 远距扫描
+  - uav4(RESERVE): CONN OFFBOARD ARM ✅ 待命保持
+- 关键参数：PX4_LOCKSTEP=0, spawn z=42.5（地形高度匹配）
+- 脚本: scripts/start_4uav_desert.sh
+
 ### 待做
-- [ ] MAPPO 多智能体 RL 训练
-- [ ] 全栈集成测试（沙漠场景 4 机巡检）
+- [ ] MAPPO 多智能体 RL 训练 ⬅️ 下一步
 
 ---
 
