@@ -286,9 +286,21 @@ source ros2_ws/install/local_setup.bash
 ros2 launch zcw_offboard test_minimal.launch.py
 ```
 
+## 2026-06-09 — Phase 8: 沙漠场景完善
+
+- 完成程序化沙漠世界生成器 `scripts/world_gen/`（YAML 配置 + Perlin 地形 + Jinja2 模板）
+- 500×500m 地形：5 区域类型（basin/plain/dune/wadi/mesa），50m 起伏，沙色纹理
+- 8 风机：随机布局 + 网格级缩放（Gazebo 11 兼容 inline model）
+- 4 杆塔对：逐柱采样地形高度，Grey 材质
+- 8 不规则岩石模型（icosphere 扰动网格）：60 块散布，0.2~4.7 scale，暗褐色
+- 80 植被：棕榈树 + 灌木，Z偏移-1m 防悬空
+- 基站平台 + Iris 无人机预览
+- 关键 Bug 记录：Gazebo 11 忽略 `<include><scale>`，须用 inline `<mesh><scale>`
+- 提交: 33c327e (已推送)
+
 ### 待做
-- [ ] 阶段 3：接入 TL 杆塔模型到 Gazebo 世界
-- [ ] 沙漠地形调研（阶段 1 遗留）
+- [ ] MAPPO 多智能体 RL 训练
+- [ ] 全栈集成测试（沙漠场景 4 机巡检）
 
 ---
 

@@ -13,9 +13,21 @@
 - [x] **阶段 5**：双机中继
 - [x] **阶段 6**：四机协同 ✅
 - [x] **阶段 7**：RL 接入 ✅
-- [ ] **Phase 8**：后续改进 ← **下一阶段**
+- [x] **Phase 8**：后续改进（沙漠场景完善）✅
 
-## 快速启动（沙漠电缆场景）
+## 快速启动（沙漠世界生成器）
+
+```bash
+source /home/travis/zcw/1.2/setup.bash
+
+# 生成并启动沙漠世界（seed=42, 8风机, 50m起伏）
+python3 /home/travis/zcw/1.2/scripts/world_gen/generate_desert_world.py \
+  --output /home/travis/zcw/1.2/assets/worlds/generated/seed_42 \
+  --seed 42 --turbine-count 8 --terrain-height 50
+
+# 启动 GUI
+gzclient --verbose
+```
 
 ```bash
 source /home/travis/zcw/1.2/setup.bash
