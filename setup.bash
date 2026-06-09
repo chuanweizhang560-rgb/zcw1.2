@@ -58,7 +58,11 @@ alias zcw-cable-track='ros2 run zcw_offboard cable_tracker --ros-args -p tower_x
 alias zcw-inspect-dual='ros2 run zcw_offboard cable_tracker --ros-args -p mavros_ns:=uav1 -p tower_x1:=-30.0 -p tower_x2:=30.0'
 alias zcw-relay='ros2 run zcw_offboard relay_control --ros-args -p own_ns:=uav2 -p inspect_ns:=uav1'
 alias zcw-dual='bash ${ZCW_ROOT}/scripts/start_dual_sim.sh'
+alias zcw-4uav='bash ${ZCW_ROOT}/scripts/start_4uav_sim.sh'
 alias zcw-mavros='ros2 launch mavros px4.launch fcu_url:="udp://:14540@127.0.0.1:14540" namespace:=uav1 tgt_system:=1 tgt_component:=1'
+alias zcw-role='ros2 run zcw_offboard role_allocator --ros-args -p num_uavs:=4'
+alias zcw-explore='ros2 run zcw_offboard explore_control --ros-args -p own_ns:=uav3 -p scout_dist:=20.0 -p altitude:=20.0'
+alias zcw-reserve='ros2 run zcw_offboard reserve_control --ros-args -p own_ns:=uav4 -p hold_x:=0.0 -p hold_y:=20.0 -p hold_z:=20.0'
 
 echo "ZCW 1.2 环境就绪 (RTX 4060 GPU 渲染)"
 echo "  快捷命令:"
@@ -71,6 +75,10 @@ echo "    zcw-inspect      - 启动风机环绕巡检控制器"
 echo "    zcw-cable-follow - 启动电缆飞线控制器"
 echo "    zcw-cable-track  - 启动电缆跟踪器 (Frenet+重捕获)"
 echo "    zcw-dual         - 启动双机仿真(INSPECT+RELAY)"
+echo "    zcw-4uav         - 启动四机仿真(全角色)"
 echo "    zcw-mavros      - 启动 MAVROS (uav1, 单机模式)"
 echo "    zcw-inspect-dual - 双机: 巡检控制器"
 echo "    zcw-relay        - 双机: 中继控制器"
+echo "    zcw-role        - 角色分配器"
+echo "    zcw-explore     - 探索控制器"
+echo "    zcw-reserve     - 待命控制器"

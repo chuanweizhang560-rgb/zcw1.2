@@ -334,4 +334,43 @@ ros2 launch zcw_offboard test_minimal.launch.py
 
 ---
 
+## 2026-06-05 — 阶段 6：四机协同
+
+### 已完成
+- 四机仿真底座：1 gzserver + 4 Iris + 4 PX4 (-i 0..3) + 4 MAVROS (uav1..uav4)
+  - `scripts/start_4uav_sim.sh` — 一键启动脚本
+  - `PX4_LOCKSTEP=0` 延续 Phase 5 做法
+  - 4 PX4 实例全部 "Ready for takeoff" ✅
+- **EXPLORE 控制器** (`explore_control.cpp`)
+  - 扫描航点循环飞行（6个 scout 点）
+  - 独立 OFFBOARD/ARM 管理
+- **RESERVE 控制器** (`reserve_control.cpp`)
+  - 保持待命位置 (0, 20, 20) @ 20m
+  - 独立 OFFBOARD/ARM 管理
+- **role_allocator 角色分配器** (`role_allocator.cpp`)
+  - 订阅 4 UAV 状态 + 位置
+  - 发布角色 /uavX/role 话题 (INSPECT/RELAY/EXPLORE/RESERVE)
+  - 每 5s 聚合报告
+- setup.bash 添加 `zcw-4uav`, `zcw-role`, `zcw-explore`, `zcw-reserve` 快捷命令
+
+### 验证结果
+```
+role_allocator Report:
+  uav1: INSPECT | OFFBOARD ARM | pos=(30,1,25)   cable 跟踪中
+  uav2: RELAY   | OFFBOARD ARM | pos=(16,0,24)   跟随巡检
+  uav3: EXPLORE | OFFBOARD ARM | pos=(-1,-0,20)  扫描航点
+  uav4: RESERVE | OFFBOARD ARM | pos=(-0,20,20)  待命保持
+```
+
+### 启动
+```bash
+source setup.bash && source ros2_ws/install/local_setup.bash
+zcw-4uav             # 终端 1: 一键启动全部
+```
+
+### 待做
+- [ ] 沙漠地形调研（阶段 1 遗留）
+
+---
+
 _日志格式：YYYY-MM-DD — 事件描述_

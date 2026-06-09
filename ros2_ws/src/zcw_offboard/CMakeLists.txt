@@ -38,12 +38,24 @@ ament_target_dependencies(cable_tracker rclcpp geometry_msgs mavros_msgs)
 add_executable(relay_control src/relay_control.cpp)
 ament_target_dependencies(relay_control rclcpp geometry_msgs mavros_msgs)
 
+add_executable(explore_control src/explore_control.cpp)
+ament_target_dependencies(explore_control rclcpp geometry_msgs mavros_msgs)
+
+add_executable(reserve_control src/reserve_control.cpp)
+ament_target_dependencies(reserve_control rclcpp geometry_msgs mavros_msgs)
+
+add_executable(role_allocator src/role_allocator.cpp)
+ament_target_dependencies(role_allocator rclcpp geometry_msgs mavros_msgs std_msgs)
+
 install(TARGETS
   offboard_control
   inspection_control
   cable_follow_control
   cable_tracker
   relay_control
+  explore_control
+  reserve_control
+  role_allocator
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY
