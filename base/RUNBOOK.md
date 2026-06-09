@@ -12,7 +12,8 @@
 - [x] **阶段 4.4**：失锁回退
 - [x] **阶段 5**：双机中继
 - [x] **阶段 6**：四机协同 ✅
-- [ ] **阶段 7**：RL 接入 ← **下一阶段**
+- [x] **阶段 7**：RL 接入 ✅
+- [ ] **Phase 8**：后续改进 ← **下一阶段**
 
 ## 快速启动（电缆巡检场景）
 
@@ -63,6 +64,24 @@ bash scripts/start_dual_sim.sh
 # 终端 1: PX4 SITL + 模型（需手动运行 gzserver + 2x PX4 + 2x MAVROS）
 # 终端 2: zcw-inspect-dual  (INSPECT 巡检控制器)
 # 终端 3: zcw-relay         (RELAY 中继控制器)
+```
+
+## 快速启动（RL 电缆跟踪 / Phase 7）
+
+```bash
+source /home/travis/zcw/1.2/setup.bash
+
+# 终端 1: PX4 + Gazebo
+zcw-px4-cable
+
+# 终端 2: GUI
+zcw-gzclient-follow
+
+# 终端 3: MAVROS
+zcw-mavros
+
+# 终端 4: PPO 跟踪
+zcw-track-rl
 ```
 
 ## 快速启动（四机协同 / Phase 6）

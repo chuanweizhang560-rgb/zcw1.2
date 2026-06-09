@@ -47,6 +47,9 @@ ament_target_dependencies(reserve_control rclcpp geometry_msgs mavros_msgs)
 add_executable(role_allocator src/role_allocator.cpp)
 ament_target_dependencies(role_allocator rclcpp geometry_msgs mavros_msgs std_msgs)
 
+add_executable(cable_tracker_rl src/cable_tracker_rl.cpp)
+ament_target_dependencies(cable_tracker_rl rclcpp geometry_msgs mavros_msgs)
+
 install(TARGETS
   offboard_control
   inspection_control
@@ -56,6 +59,7 @@ install(TARGETS
   explore_control
   reserve_control
   role_allocator
+  cable_tracker_rl
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY

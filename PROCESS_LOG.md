@@ -373,4 +373,41 @@ zcw-4uav             # 终端 1: 一键启动全部
 
 ---
 
-_日志格式：YYYY-MM-DD — 事件描述_
+## 2026-06-05 — 阶段 7：RL 接入
+
+### 已完成
+- **RL 环境封装** (`zcw_rl/`)
+  - `envs/cable_env.py` — Gymnasium 电缆跟踪环境（悬链线模型，无需 Gazebo）
+  - 观测：[t_progress, dx, dy, dz] (4维)
+  - 动作：[dt_progress, dy, dz] 连续控制
+  - 奖励：-error + 前进奖励 + 到达奖励
+- **PPO 训练管线** (`train/train_ppo.py`)
+  - Stable-Baselines3 PPO，200K timesteps
+  - V4 模型：mean_err=0.285m, max_err=2.224m, 到达 t≈0.94 ✅
+  - 训练用 Python 3.10（ROS2 兼容），inference 5559 Hz
+- **RL 部署节点** (`scripts/cable_tracker_rl.py`)
+  - ROS 2 Python 节点，20Hz setpoint 发布
+  - 加载 PPO 模型进行推理，fallback 到规则跟踪
+  - `/usr/bin/python3` 兼容 rclpy + stable-baselines3
+- setup.bash 添加 `zcw-track-rl` 快捷命令
+
+### 启动 (RL 电缆跟踪)
+```bash
+source setup.bash
+# 终端 1: PX4 + Gazebo
+zcw-px4-cable
+# 终端 2: GUI
+zcw-gzclient-follow
+# 终端 3: MAVROS
+zcw-mavros
+# 终端 4: RL 跟踪
+zcw-track-rl
+```
+
+### 待做
+- [ ] 沙漠地形调研（阶段 1 遗留）
+- [ ] 部署后 Gazebo 实测 PPO 跟踪
+- [ ] RL 训练在更多随机种子下的收敛验证
+- [ ] MAPPO 多机协同训练（阶段 7 扩展）
+
+---_日志格式：YYYY-MM-DD — 事件描述_

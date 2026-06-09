@@ -1,0 +1,4 @@
+__pycache__/
+logs_*/
+models/best/
+*.egg-info/
