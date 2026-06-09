@@ -216,6 +216,48 @@ ros2 run zcw_offboard cable_follow_control \
 
 ---
 
+## 2026-06-09 — 阶段 5：双机中继（INSPECT+RELAY）
+
+### 已完成
+- 双机独立仿真架构：1 个 gzserver + 2 个 Iris 模型 + 2 个 PX4 实例 (`-i 0`, `-i 1`) + 2 个 MAVROS
+- **关键修复**：PX4_LOCKSTEP=0 避免共享 gzserver 时两实例锁步冲突
+- **关键修复**：relay_control 移除 `if (!armed_ || mode_ != "OFFBOARD")` 守卫，setpoints 在 OFFBOARD 前持续发送
+- **setpoint 预流**：OFFBOARD 请求前必须持续发送 setpoints ≥5s，否则 PX4 拒绝
+- cable_tracker 适配双机命名空间 (`mavros_ns:=uav1`)
+- relay_control 新节点：订阅 INSPECT 位置 → 计算中继位置 → 发布 setpoint
+
+### 双机验证结果
+```
+cable_tracker TRACK t=0.00→0.90 (tower2→tower1)
+TRACK t=0.00 pos=(-29.7,0.6,26.8) err=1.81
+TRACK t=0.45 pos=(-9.1,0.5,21.6) err=0.51
+TRACK t=0.90 pos=(17.8,0.6,22.6) err=0.28
+
+relay_control 同时跟踪 INSPECT 位置
+RELAY: inspect(-5,-0) relay_set(-3,-0) err=0.1 dist=14
+RELAY: inspect(-29,1) relay_set(-17,0) err=1.1 dist=12
+```
+
+### 启动（双机）
+```bash
+source setup.bash
+# 终端 1: bash scripts/start_dual_sim.sh   (全自动)
+# 或手动:
+#   终端 1: gzserver assets/worlds/cable_inspection.world
+#   终端 2: ./PX4-Autopilot/build/px4_sitl_default/bin/px4 -d .../etc  (INSPECT)
+#   终端 3: PX4_SIM_MODEL=... ./px4 -i 1 -d .../etc  (RELAY, PX4_LOCKSTEP=0)
+#   终端 4: ros2 launch mavros ... namespace:=uav1
+#   终端 5: ros2 launch mavros ... namespace:=uav2 fcu_url:="udp://:14541@..."
+#   终端 6: zcw-inspect-dual
+#   终端 7: zcw-relay
+```
+
+### 待做
+- [ ] 沙漠地形调研（阶段 1 遗留）
+- [ ] 阶段 6：学习层集成
+
+---
+
 ## 2026-06-05 — 阶段 4.4：失锁回退
 
 ### 已完成

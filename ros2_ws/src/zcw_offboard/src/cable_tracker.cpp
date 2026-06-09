@@ -28,6 +28,7 @@ public:
         declare_parameter("track_speed", 3.0);
         declare_parameter("recapture_dist", 5.0);
         declare_parameter("sweep_timeout", 8.0);
+        std::string mavros_ns = declare_parameter("mavros_ns", "");
 
         x1_ = get_parameter("tower_x1").as_double();
         x2_ = get_parameter("tower_x2").as_double();
@@ -41,8 +42,9 @@ public:
         span_half_ = (x2_ - x1_) / 2.0;
         cx_ = (x1_ + x2_) / 2.0;
 
+        pref_ = mavros_ns.empty() ? "" : mavros_ns + "/";
         state_sub_ = create_subscription<mavros_msgs::msg::State>(
-            "mavros/state", 10, [this](const mavros_msgs::msg::State::SharedPtr msg) {
+            pref_ + "state", 10, [this](const mavros_msgs::msg::State::SharedPtr msg) {
                 connected_ = msg->connected;
                 armed_ = msg->armed;
                 mode_ = msg->mode;
@@ -50,14 +52,14 @@ public:
 
         auto qos = rclcpp::QoS(rclcpp::KeepLast(10)).best_effort();
         pos_sub_ = create_subscription<geometry_msgs::msg::PoseStamped>(
-            "mavros/local_position/pose", qos,
+            pref_ + "local_position/pose", qos,
             [this](const geometry_msgs::msg::PoseStamped::SharedPtr msg) {
                 pos_ = {msg->pose.position.x, msg->pose.position.y, msg->pose.position.z};
             });
 
-        sp_pub_ = create_publisher<geometry_msgs::msg::PoseStamped>("mavros/setpoint_position/local", 10);
-        arming_client_ = create_client<mavros_msgs::srv::CommandBool>("mavros/cmd/arming");
-        set_mode_client_ = create_client<mavros_msgs::srv::SetMode>("mavros/set_mode");
+        sp_pub_ = create_publisher<geometry_msgs::msg::PoseStamped>(pref_ + "setpoint_position/local", 10);
+        arming_client_ = create_client<mavros_msgs::srv::CommandBool>(pref_ + "cmd/arming");
+        set_mode_client_ = create_client<mavros_msgs::srv::SetMode>(pref_ + "set_mode");
 
         sp_timer_ = create_wall_timer(100ms, [this]() { publish_setpoint(); });
         cmd_timer_ = create_wall_timer(100ms, [this]() { update_state(); });
@@ -154,20 +156,26 @@ private:
     void update_state() {
         if (!connected_ || state_ == State::DONE) return;
 
-        if (!armed_) {
-            if (state_ == State::DONE) return;
-            RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 2000, "Arming...");
-            auto req = std::make_shared<mavros_msgs::srv::CommandBool::Request>();
-            req->value = true;
-            arming_client_->async_send_request(req);
-            return;
-        }
+        auto now_s = now().seconds();
+        double cmd_cooldown = 1.0;
+
         if (mode_ != "OFFBOARD") {
             if (state_ == State::FALLBACK || state_ == State::LAND || state_ == State::DONE) return;
+            if (now_s - last_cmd_time_ < cmd_cooldown) return;
+            last_cmd_time_ = now_s;
             RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 2000, "Setting OFFBOARD...");
             auto req = std::make_shared<mavros_msgs::srv::SetMode::Request>();
             req->custom_mode = "OFFBOARD";
             set_mode_client_->async_send_request(req);
+            return;
+        }
+        if (!armed_) {
+            if (now_s - last_cmd_time_ < cmd_cooldown) return;
+            last_cmd_time_ = now_s;
+            RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 2000, "Arming...");
+            auto req = std::make_shared<mavros_msgs::srv::CommandBool::Request>();
+            req->value = true;
+            arming_client_->async_send_request(req);
             return;
         }
 
@@ -284,7 +292,9 @@ private:
     double t_progress_, error_start_;
     int recapture_count_;
     double last_good_t_;
+    std::string pref_;
     double sweep_phase_, sweep_amp_;
+    double last_cmd_time_ = 0;
     double land_target_z_;
     Vec3 pos_;
     bool connected_, armed_;

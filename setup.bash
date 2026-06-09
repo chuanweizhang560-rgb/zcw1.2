@@ -55,6 +55,10 @@ alias zcw-offboard='ros2 launch zcw_offboard test_minimal.launch.py'
 alias zcw-inspect='ros2 run zcw_offboard inspection_control --ros-args -p radius:=80.0 -p height:=30.0 -p angular_velocity:=0.1 -p center_x:=80.0 -p center_y:=0.0'
 alias zcw-cable-follow='ros2 run zcw_offboard cable_follow_control --ros-args -p tower_x1:=-30.0 -p tower_x2:=30.0 -p cable_y:=0.6'
 alias zcw-cable-track='ros2 run zcw_offboard cable_tracker --ros-args -p tower_x1:=-30.0 -p tower_x2:=30.0'
+alias zcw-inspect-dual='ros2 run zcw_offboard cable_tracker --ros-args -p mavros_ns:=uav1 -p tower_x1:=-30.0 -p tower_x2:=30.0'
+alias zcw-relay='ros2 run zcw_offboard relay_control --ros-args -p own_ns:=uav2 -p inspect_ns:=uav1'
+alias zcw-dual='bash ${ZCW_ROOT}/scripts/start_dual_sim.sh'
+alias zcw-mavros='ros2 launch mavros px4.launch fcu_url:="udp://:14540@127.0.0.1:14540" namespace:=uav1 tgt_system:=1 tgt_component:=1'
 
 echo "ZCW 1.2 环境就绪 (RTX 4060 GPU 渲染)"
 echo "  快捷命令:"
@@ -66,3 +70,7 @@ echo "    zcw-gzclient-follow - 启动 Gazebo GUI (自动追踪)"
 echo "    zcw-inspect      - 启动风机环绕巡检控制器"
 echo "    zcw-cable-follow - 启动电缆飞线控制器"
 echo "    zcw-cable-track  - 启动电缆跟踪器 (Frenet+重捕获)"
+echo "    zcw-dual         - 启动双机仿真(INSPECT+RELAY)"
+echo "    zcw-mavros      - 启动 MAVROS (uav1, 单机模式)"
+echo "    zcw-inspect-dual - 双机: 巡检控制器"
+echo "    zcw-relay        - 双机: 中继控制器"

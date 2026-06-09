@@ -35,11 +35,15 @@ ament_target_dependencies(cable_follow_control rclcpp geometry_msgs mavros_msgs)
 add_executable(cable_tracker src/cable_tracker.cpp)
 ament_target_dependencies(cable_tracker rclcpp geometry_msgs mavros_msgs)
 
+add_executable(relay_control src/relay_control.cpp)
+ament_target_dependencies(relay_control rclcpp geometry_msgs mavros_msgs)
+
 install(TARGETS
   offboard_control
   inspection_control
   cable_follow_control
   cable_tracker
+  relay_control
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY
