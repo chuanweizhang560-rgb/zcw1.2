@@ -152,15 +152,17 @@
 
 ### 4.1 定位原则
 
-整个项目**不依赖 Gazebo 真值**进行控制闭环。无人机通过开源 SLAM 方案实现自主定位：
+整个项目**不依赖 Gazebo 真值**进行控制闭环。无人机通过开源 LVI-SLAM（LiDAR-Visual-Inertial SLAM）方案实现自主定位：
 
-- 每架无人机运行独立的 SLAM 实例（单机定位）
+- 每架无人机运行独立的 LVI-SLAM 实例（单机定位）
 - 初始位姿已知（基站坐标），后续全凭 SLAM 推算
-- SLAM 输出：6-DOF 位姿 + 局部/全局地图
-- 推荐候选方案（最终选型需调研后确定）：
-  - `ORB-SLAM3` — 单目/双目/RGB-D + IMU，ROS 2 集成成熟，学术标准
-  - `VINS-Fusion` — 双目 + IMU，紧耦合，已用于多机场景
-  - `DroidSLAM` — 深度学习 SLAM，鲁棒性更高但计算量更大
+- SLAM 输出：6-DOF 位姿 + 稠密/稀疏地图
+- **选定方案：LVI-SAM**（TixiaoShan, MIT, ICRA 2021）
+  - 紧耦合 LiDAR-Visual-Inertial 因子图优化
+  - VIS（视觉-惯导子系统）+ LIS（LiDAR-惯导子系统）
+  - 单子系统失效时另一系统可独立工作
+  - ROS 2 移植版：[Pihz-26/LVI-SAM_ROS2](https://github.com/Pihz-26/LVI-SAM_ROS2)
+- 传感器配置：LiDAR（模拟 Ouster/VLP-16）+ 双目相机 + IMU
 
 ### 4.2 建图架构
 
@@ -182,9 +184,10 @@ Gazebo 中每架 Iris 无人机需挂载：
 
 | 传感器 | 用途 | 备注 |
 |---|---|---|
-| 双目立体相机 | SLAM 视觉输入、障碍感知 | Gazebo MultiCamera 插件 |
-| IMU | SLAM 惯导融合 | PX4 SITL 内置 |
-| GPS（可选） | 辅助定位 / 故障降级 | Gazhao GPS 插件 |
+| 3D LiDAR | LVI-SAM 激光雷达点云输入 | Gazebo 模拟 Ouster OS0-64 或 VLP-16 |
+| 双目立体相机 | LVI-SAM 视觉输入、障碍感知 | Gazebo MultiCamera 插件 |
+| IMU | LVI-SAM 惯导融合 | PX4 SITL 内置，或 Gazebo IMU 插件 |
+| GPS（可选） | 辅助定位 / 故障降级 | Gazebo GPS 插件 |
 
 ### 4.4 SLAM 与控制的耦合
 
@@ -455,14 +458,18 @@ SLAM 位姿 → 坐标变换 → MAVROS / PX4 定位源
 - **全局地图共享**：各机通过基站或 DDS 共享 SLAM 地图更新
 - 地图共享频率：`0.5-1 Hz`（带宽受限时增量同步）
 
-### 8.4 多编队扩展
+### 8.4 编队（Squad）任务模型
 
-初期固定 1 个编队（4 架无人机=INSPECT+RELAY+EXPLORE+RESERVE）。
-后期扩展目标：
+**编队是接受任务的最小单位。**
 
-- 每编队固定 4 机角色组合
-- 多编队时增加跨编队协调层
-- 编队间通过基站进行地图合并和高层任务协调
+1. **1 编队 = 4 机（INSPECT + RELAY + EXPLORE + RESERVE）**
+2. **1 编队接 1 个巡检任务**（风机或电缆），编队内部 4 机配合完成
+3. **当前阶段**：1 编队 × 4 机，单任务执行
+4. **后期扩展目标**：
+   - 多编队多任务并行
+   - 每编队固定 4 机角色组合
+   - 多编队时增加跨编队协调层
+   - 编队间通过基站进行地图合并和高层任务协调
 
 ## 9. 学习层设计
 
@@ -823,7 +830,7 @@ RL 策略的观测（每个智能体）建议包含：
 下面这几个点会直接影响第一版实现，我建议在动手前最后确认一次：
 
 1. 仿真最终是只锁 `Gazebo 11`，还是同时保留 `Gazebo Sim` 的迁移分支。
-2. SLAM 最终选型（ORB-SLAM3 / VINS-Fusion / 其他）。
+2. SLAM 最终选型：已定为 **LVI-SAM**（TixiaoShan），ROS 2 移植版本待验证。
 3. 地图表示方式：体素占用网格、TSDF 或 ESDF。
 4. 多机编队扩张计划：完成 4 机单编队后，扩展到多编队的预期时间点。
 
@@ -884,4 +891,7 @@ RL 策略的观测（每个智能体）建议包含：
 - [ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3)
 - [VINS-Fusion](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion)
 - [DroidSLAM](https://github.com/princeton-vl/DroidSLAM)
+- [LVI-SAM (TixiaoShan, ICRA 2021)](https://github.com/TixiaoShan/LVI-SAM)
+- [LVI-SAM_ROS2 (Pihz-26)](https://github.com/Pihz-26/LVI-SAM_ROS2)
+- [Ouster OS0-64 LiDAR Gazebo 模型](https://github.com/SteveMacenski/ouster_example)
 - [PX4 EKF2 视觉位姿融合](https://docs.px4.io/main/en/advanced_config/tuning_the_ecl_ekf.html)
