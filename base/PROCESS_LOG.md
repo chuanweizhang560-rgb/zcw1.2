@@ -311,8 +311,23 @@ ros2 launch zcw_offboard test_minimal.launch.py
 - 脚本: scripts/start_4uav_desert.sh
 
 ### 待做
-- [ ] MAPPO 多智能体 RL 训练 ⬅️ 下一步
+- [ ] SLAM 方案调研与集成 ⬅️ 当前阶段 (Phase 8)
+- [ ] 增量建图 + 多机地图共享 (Phase 9)
+- [ ] SLAM + 建图 + 任务 + MAPPO 完整链路集成 (Phase 10)
 
 ---
 
-_日志格式：YYYY-MM-DD — 事件描述_
+## 2026-06-09 — 工作流更新：SLAM + 建图 + 多编队架构
+
+- 更新 docs/00_workflow.md 以反映真实项目架构
+- 新增 Section 4：SLAM 与建图架构（ORB-SLAM3 / VINS-Fusion / DroidSLAM 候选）
+- 新增 Section 4.4：SLAM 与控制耦合（基于 SLAM 位姿，断开 Gazebo 真值）
+- 新增 Section 8.3：全局地图共享机制
+- 新增 Section 8.4：多编队扩展规划（1 编队×4 机 → 多编队）
+- 新增 Section 9.3：RL 观测空间（含地图输入）
+- 新增 Section 9.6：训练阶段 5 步计划
+- 新增 Phase 8-10：SLAM 调研 → 增量建图 → 全链路集成
+- 更新 Section 0：新增规则 12-13（不依赖真值、核心算法必须用开源）
+- 更新 Section 12：新增 SLAM 选型、地图表示、编队扩展待确认项
+- 关键约束已写入持久记忆
+- 提交: 7ab0530 (已推送)
