@@ -410,4 +410,36 @@ zcw-track-rl
 - [ ] RL 训练在更多随机种子下的收敛验证
 - [ ] MAPPO 多机协同训练（阶段 7 扩展）
 
----_日志格式：YYYY-MM-DD — 事件描述_
+---
+
+## 2026-06-05 — 沙漠地形调研与集成 (Phase 1 TODO)
+
+### 已完成
+- **方案选择**：程序化 heightmap + Gazebo 11 内置高度图渲染
+  - 不依赖外部 DEM 数据或工具链
+  - 生成的 257x257 16-bit 灰度 PNG，300x300m x 8m 沙丘地形
+- **程序化沙丘生成器** (`scripts/gen_desert_heightmap.py`)
+  - 多频正弦波组合模拟风成沙丘 (wind-swept dune)
+  - 16-bit 灰度 PNG 输出，Gazebo Classic 原生支持
+- **desert_terrain SDF 模型** (`assets/models/desert_terrain/`)
+  - 高度图 + dirt 纹理 + 碰撞体
+  - 复制到 PX4 模型路径和 assets/models
+- **新世界文件** (`assets/worlds/cable_inspection_desert.world`)
+  - 沙漠地形 + TL 杆塔 x2，无 ground_plane/asphalt_plane
+- `setup.bash` 添加 `assets/models/` 到 GAZEBO_MODEL_PATH
+- 添加 `zcw-px4-cable-desert` 别名
+
+### 验证
+- gzserver + gzclient 正常加载，沙丘地形和杆塔可见 ✅
+- 无崩溃、无浮点异常、无 missing model 错误
+
+### 启动
+```bash
+source setup.bash
+# 终端 1: PX4 + Gazebo (沙漠场景)
+zcw-px4-cable-desert
+# 终端 2: GUI
+zcw-gzclient-follow
+```
+
+---

@@ -40,7 +40,10 @@ source "${ZCW_ROOT}/PX4-Autopilot/Tools/simulation/gazebo-classic/setup_gazebo.b
     "${ZCW_ROOT}/PX4-Autopilot" \
     "${ZCW_ROOT}/PX4-Autopilot/build/px4_sitl_default"
 
-# 4. Source ROS 2 workspace
+# 4. 添加项目自定义模型路径
+export GAZEBO_MODEL_PATH="${ZCW_ROOT}/assets/models:${GAZEBO_MODEL_PATH}"
+
+# 5. Source ROS 2 workspace
 if [ -f "${ZCW_ROOT}/ros2_ws/install/local_setup.bash" ]; then
     source "${ZCW_ROOT}/ros2_ws/install/local_setup.bash"
 fi
@@ -49,6 +52,7 @@ fi
 alias zcw-px4='cd ${ZCW_ROOT}/PX4-Autopilot && PX4_SITL_WORLD=tower HEADLESS=1 make px4_sitl gazebo-classic_iris'
 alias zcw-px4-turbine='cd ${ZCW_ROOT}/PX4-Autopilot && PX4_SITL_WORLD=turbine_inspection HEADLESS=1 make px4_sitl gazebo-classic_iris'
 alias zcw-px4-cable='cd ${ZCW_ROOT}/PX4-Autopilot && PX4_SITL_WORLD=cable_inspection HEADLESS=1 make px4_sitl gazebo-classic_iris'
+alias zcw-px4-cable-desert='cd ${ZCW_ROOT}/PX4-Autopilot && PX4_SITL_WORLD=cable_inspection_desert HEADLESS=1 make px4_sitl gazebo-classic_iris'
 alias zcw-gzclient='gzclient --verbose &'
 alias zcw-gzclient-follow='gzclient --verbose --gui-client-plugin libgazebo_user_camera_plugin.so &'
 alias zcw-offboard='ros2 launch zcw_offboard test_minimal.launch.py'

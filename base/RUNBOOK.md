@@ -15,6 +15,24 @@
 - [x] **阶段 7**：RL 接入 ✅
 - [ ] **Phase 8**：后续改进 ← **下一阶段**
 
+## 快速启动（沙漠电缆场景）
+
+```bash
+source /home/travis/zcw/1.2/setup.bash
+
+# 终端 1: PX4 + Gazebo (沙漠地形)
+zcw-px4-cable-desert
+
+# 终端 2: GUI
+zcw-gzclient-follow
+
+# 终端 3: MAVROS
+zcw-mavros
+
+# 终端 4: 跟踪控制器
+zcw-cable-track
+```
+
 ## 快速启动（电缆巡检场景）
 
 ```bash
