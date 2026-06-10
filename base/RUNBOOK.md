@@ -14,7 +14,7 @@
 - [x] **阶段 6**：四机协同 ✅
 - [x] **阶段 7**：RL 接入 ✅
 - [x] **Phase 8**：后续改进（沙漠场景完善 + 全栈测试）✅
-- [ ] **Phase 8**：SLAM 开源方案调研与集成 ← 当前阶段
+- [x] **Phase 8**：SLAM 开源方案调研与集成 ✅（FAST-LIVO2 LIO-only 跑通）
 - [ ] **Phase 9**：增量建图 + 多机地图共享
 - [ ] **Phase 10**：SLAM + 建图 + 任务 + MAPPO 完整链路
 
@@ -115,6 +115,24 @@ zcw-mavros
 
 # 终端 4: PPO 跟踪
 zcw-track-rl
+```
+
+## 快速启动（FAST-LIVO2 SLAM / Phase 8）
+
+```bash
+source /home/travis/zcw/1.2/setup.bash
+
+# 方式 1: 一键全栈验证（推荐）
+zcw-livo-full
+
+# 方式 2: 单机启动（需已有传感器数据）
+zcw-livo
+
+# 模型: iris_stereo_velodyne (VLP-16 + 双目 + IMU)
+# LiDAR: /velodyne_laser_plugin/out
+# IMU: /mavros/imu/data (50Hz, MAVROS 必须用 ros2 run 直接启动)
+# 输出: /aft_mapped_to_init /cloud_registered /Laser_map /path /LIVO2/imu_propagate
+# 注意事项: FAST-LIVO2 + MAVROS 都需 use_sim_time:=True, config 需完整 extrin_calib
 ```
 
 ## 快速启动（四机协同 / Phase 6）

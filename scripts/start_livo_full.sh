@@ -48,15 +48,18 @@ sleep 5
 kill -0 $PX4PID 2>/dev/null || { echo "PX4 failed to start"; exit 1; }
 echo "PX4 running"
 
-echo "=== 4. Starting MAVROS ==="
-ros2 launch mavros px4.launch.py fcu_url:=udp://:14540@127.0.0.1:14580 namespace:=uav1 \
+echo "=== 4. Starting MAVROS (direct node) ==="
+ros2 run mavros mavros_node --ros-args \
+  -p fcu_url:=udp://:14540@127.0.0.1:14580 \
+  -p system_id:=1 -p component_id:=1 -p use_sim_time:=True \
   > /tmp/mavros_livo.log 2>&1 &
 MAVROSPID=$!
 sleep 5
 
 echo "=== 5. Starting FAST-LIVO2 ==="
-LD_LIBRARY_PATH="/home/travis/miniconda3/lib:/home/travis/zcw/1.2/ros2_ws/install/vikit_common/lib:/home/travis/zcw/1.2/ros2_ws/install/vikit_ros/lib:$LD_LIBRARY_PATH" \
+LD_LIBRARY_PATH="/home/travis/zcw/1.2/ros2_ws/install/vikit_common/lib:/home/travis/zcw/1.2/ros2_ws/install/vikit_ros/lib:$LD_LIBRARY_PATH" \
     /home/travis/zcw/1.2/ros2_ws/build/fast_livo2/fast_livo2 --ros-args \
+    -p use_sim_time:=True \
     --params-file /home/travis/zcw/1.2/ros2_ws/src/fast_livo2/config/livo_config.yaml \
     > /tmp/livo_runtime.log 2>&1 &
 LIVOPID=$!

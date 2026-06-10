@@ -5,7 +5,7 @@
         imu_en: true
         img_en: false
         lid_topic: "/velodyne_laser_plugin/out"
-        imu_topic: "/uav1/imu/data"
+        imu_topic: "/mavros/imu/data"
         img_topic: "/stereo/left/image_raw"
         ros_driver_bug_fix: false
 

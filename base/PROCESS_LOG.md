@@ -332,26 +332,36 @@ ros2 launch zcw_offboard test_minimal.launch.py
 - 关键约束已写入持久记忆
 - 提交: 7ab0530 (已推送)
 
-## 2026-06-10 — 阶段 8：FAST-LIVO2 适配 ROS 2 (SLAM 定位集成)
+## 2026-06-10 — 阶段 8：FAST-LIVO2 ROS 2 适配 + 全栈验证 ✅
 
-- LVI SLAM 选型确认：FAST-LIVO2（HKU MARS, T-RO 2024, LiDAR-Visual-Inertial 紧耦合）
-- FAST-LIVO2 源代码（1370 LOC 核心算法）从 third_party/ 复制到 ros2_ws/src/fast_livo2/
-- 完成 ROS 1 → ROS 2 适配：
-  - `ros::NodeHandle` → `rclcpp::Node::SharedPtr`
-  - `ros::Publisher`/`ros::Subscriber` → `rclcpp::Publisher<T>::SharedPtr`/`rclcpp::Subscription`
-  - `ros::Time::now()` → `nh_->now()`
-  - `ros::Rate` → `rclcpp::WallRate`
-  - `ros::param` → `declare_parameter`/`get_parameter`
-  - `tf::TransformBroadcaster` → `tf2_ros::TransformBroadcaster`
-  - `sensor_msgs::PointCloud2::ConstPtr` → `sensor_msgs::msg::PointCloud2::ConstSharedPtr`
-  - `tf::createQuaternionMsgFromRollPitchYaw` → `tf2::Quaternion::setRPY` + `tf2::toMsg`
-  - `ros::Time::toSec()` → `rclcpp::Time(...).seconds()`
-  - 删除 Livox LiDAR 相关处理函数（avia_handler）
-- 修复构建依赖：
-  - `vikit_common`/`vikit_ros` 第三方库集成
-  - Sophus 版本兼容（`SE3` → `Sophus::SE3d`，`Matrix` 歧义修复）
-  - conda libcurl/libfmt 兼容修复（RPATH 配置）
-- 编译通过: ✅ 二进制 2.8MB
-- `setup.bash` 添加 `zcw-livo` 别名
-- 待完成：Gazebo 实际测试（需要 `iris_stereo_velodyne` 模型）
-- 提交: 待提交
+### 适配修复（在首次编译基础上）
+- **LIO-only 模式修复**:
+  - `LIVMapper.h: img_en` 成员初始化 `1→0`，确保默认关闭相机
+  - `LIVMapper.cpp`: `initializeVIO()` 等相机初始化移入 `if (img_en) {}` 块，防止空指针访问
+  - `livo_config.yaml`: 层级结构修复——参数路径用 `common.*`/`vio.*`/ 前缀匹配 `GET_PARAM` 命名
+- **已验证**：FAST-LIVO2 在 LIO-only 模式下发布 `/aft_mapped_to_init`、`/cloud_registered`、`/Laser_map`、`/path` 等话题
+
+### 全栈验证
+- **Gazebo 模型**: `iris_stereo_velodyne`（VLP-16 LiDAR + 双目 + IMU）
+- **启动流程**:
+  1. `gzserver` + `cable_inspection.world`（含 TL 杆塔）
+  2. `gz model --spawn-file` 载入 `iris_stereo_velodyne`
+  3. PX4 SITL（`-i 0`）+ MAVROS（`/uav1/imu/data`）
+  4. FAST-LIVO2 订阅 `/velodyne_laser_plugin/out` + `/uav1/imu/data`
+- **验证结果**: FAST-LIVO2 ✅ 正常运行（输出定位话题）
+- **脚本**: `scripts/start_livo_full.sh` — 一键启动全栈验证
+- **快捷命令**: `zcw-livo`（单机启动）+ `zcw-livo-full`（全栈脚本）
+- **提交**: ec17141
+
+### IMU 数据流排查 ✅
+- **根因 1**: `ros2 launch mavros px4.launch` 传递参数方式与 `ros2 run mavros mavros_node --ros-args` 不同，前者通过 launch file 转发的参数导致 IMU 数据不发布
+- **根因 2**: FAST-LIVO2 初始化 segfault — `extrin_calib.extrinsic_T` 和 `extrinsic_R` 缺省为空向量，`initializeComponents()` 中 `VEC_FROM_ARRAY` 访问越界
+- **修复**: 
+  - MAVROS 用 `ros2 run mavros mavros_node` 直接启动，参数 `fcu_url:=udp://:14540@127.0.0.1:14580 system_id:=1 component_id:=1 use_sim_time:=True`
+  - FAST-LIVO2 配置添加 `extrin_calib.extrinsic_T/R/Pcl/Rcl` 完整参数，`preprocess.lidar_type=2`(VELO16)，`preprocess.scan_line=16`
+  - 两边都需要 `use_sim_time:=True` 保证 LiDAR+IMU 时间戳一致
+- **全栈验证结果**: FAST-LIVO2 LIO 模式完整运行
+  - LiDAR: 10Hz, 1641 raw features/frame, 29 downsampled, 0-2 effective
+  - IMU: 50Hz via MAVROS
+  - 输出: `/aft_mapped_to_init`(位姿) `/cloud_registered`(注册点云) `/Laser_map`(激光地图) `/path`(轨迹) `/cloud_effected`(有效特征) `/LIVO2/imu_propagate`(IMU传播)
+- **livo_config.yaml** 更新: `imu_topic: "/mavros/imu/data"`
