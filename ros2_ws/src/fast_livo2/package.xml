@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>fast_livo2</name>
+  <version>2.0.0</version>
+  <description>FAST-LIVO2 ROS 2 adaptation for UAV inspection</description>
+  <maintainer email="zcw@example.com">zcw</maintainer>
+  <license>GPLv2</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>visualization_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>pcl_conversions</depend>
+  <depend>libpcl-all-dev</depend>
+  <depend>eigen</depend>
+  <depend>opencv</depend>
+  <depend>sophus</depend>
+  <depend>vikit_common</depend>
+  <depend>vikit_ros</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

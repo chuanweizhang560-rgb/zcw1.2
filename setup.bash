@@ -31,6 +31,9 @@ __clean_path AMENT_PREFIX_PATH
 __clean_path PYTHONPATH
 __clean_path CMAKE_PREFIX_PATH
 
+# 1b. Add conda lib path for libfmt.so.12 (needed by some OpenCV deps)
+export LD_LIBRARY_PATH="/home/travis/miniconda3/lib:${LD_LIBRARY_PATH}"
+
 # 2. Source ROS 2 + Gazebo
 source /opt/ros/humble/setup.bash
 source /usr/share/gazebo/setup.sh
@@ -68,6 +71,7 @@ alias zcw-role='ros2 run zcw_offboard role_allocator --ros-args -p num_uavs:=4'
 alias zcw-explore='ros2 run zcw_offboard explore_control --ros-args -p own_ns:=uav3 -p scout_dist:=20.0 -p altitude:=20.0'
 alias zcw-reserve='ros2 run zcw_offboard reserve_control --ros-args -p own_ns:=uav4 -p hold_x:=0.0 -p hold_y:=20.0 -p hold_z:=20.0'
 alias zcw-track-rl='PYTHONPATH=${ZCW_ROOT}/zcw_rl/src:$PYTHONPATH /usr/bin/python3 ${ZCW_ROOT}/ros2_ws/src/zcw_offboard/scripts/cable_tracker_rl.py --ros-args -p tower_x1:=-30.0 -p tower_x2:=30.0 -p model_path:=${ZCW_ROOT}/zcw_rl/models/ppo_cable_tracker_v4_final.zip'
+alias zcw-livo='ros2 run fast_livo2 fast_livo2'
 
 echo "ZCW 1.2 环境就绪 (RTX 4060 GPU 渲染)"
 echo "  快捷命令:"
@@ -88,3 +92,4 @@ echo "    zcw-role        - 角色分配器"
 echo "    zcw-explore     - 探索控制器"
 echo "    zcw-reserve     - 待命控制器"
 echo "    zcw-track-rl    - RL 电缆跟踪 (PPO)"
+echo "    zcw-livo        - FAST-LIVO2 SLAM 定位 (LiDAR-Visual-Inertial)"

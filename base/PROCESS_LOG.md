@@ -331,3 +331,27 @@ ros2 launch zcw_offboard test_minimal.launch.py
 - 更新 Section 12：新增 SLAM 选型、地图表示、编队扩展待确认项
 - 关键约束已写入持久记忆
 - 提交: 7ab0530 (已推送)
+
+## 2026-06-10 — 阶段 8：FAST-LIVO2 适配 ROS 2 (SLAM 定位集成)
+
+- LVI SLAM 选型确认：FAST-LIVO2（HKU MARS, T-RO 2024, LiDAR-Visual-Inertial 紧耦合）
+- FAST-LIVO2 源代码（1370 LOC 核心算法）从 third_party/ 复制到 ros2_ws/src/fast_livo2/
+- 完成 ROS 1 → ROS 2 适配：
+  - `ros::NodeHandle` → `rclcpp::Node::SharedPtr`
+  - `ros::Publisher`/`ros::Subscriber` → `rclcpp::Publisher<T>::SharedPtr`/`rclcpp::Subscription`
+  - `ros::Time::now()` → `nh_->now()`
+  - `ros::Rate` → `rclcpp::WallRate`
+  - `ros::param` → `declare_parameter`/`get_parameter`
+  - `tf::TransformBroadcaster` → `tf2_ros::TransformBroadcaster`
+  - `sensor_msgs::PointCloud2::ConstPtr` → `sensor_msgs::msg::PointCloud2::ConstSharedPtr`
+  - `tf::createQuaternionMsgFromRollPitchYaw` → `tf2::Quaternion::setRPY` + `tf2::toMsg`
+  - `ros::Time::toSec()` → `rclcpp::Time(...).seconds()`
+  - 删除 Livox LiDAR 相关处理函数（avia_handler）
+- 修复构建依赖：
+  - `vikit_common`/`vikit_ros` 第三方库集成
+  - Sophus 版本兼容（`SE3` → `Sophus::SE3d`，`Matrix` 歧义修复）
+  - conda libcurl/libfmt 兼容修复（RPATH 配置）
+- 编译通过: ✅ 二进制 2.8MB
+- `setup.bash` 添加 `zcw-livo` 别名
+- 待完成：Gazebo 实际测试（需要 `iris_stereo_velodyne` 模型）
+- 提交: 待提交
