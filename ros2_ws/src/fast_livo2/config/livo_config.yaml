@@ -1,68 +1,93 @@
 /**:
     ros__parameters:
-      # LiDAR topic (from iris_stereo_velodyne)
-      lid_topic: "/uav1/velodyne_points"
-      # IMU topic (from iris_stereo_velodyne)
-      imu_topic: "/uav1/imu"
-      # Camera topic (from iris_stereo_velodyne)
-      img_topic: "/uav1/stereo_camera/left/image_raw"
-      img_en: true
+      common:
+        lidar_en: true
+        imu_en: true
+        img_en: false
+        lid_topic: "/velodyne_laser_plugin/out"
+        imu_topic: "/uav1/imu/data"
+        img_topic: "/stereo/left/image_raw"
+        ros_driver_bug_fix: false
 
-      # LiDAR preprocessing
-      preprocess:
-        lidar_type: 2  # 2=VELO16 (VLP-16)
-        scan_line: 16
-        blind: 0.01
-        point_filter_num: 3
-        feature_enabled: true
-
-      # LIO parameters
-      lio:
-        max_layer: 1
-        voxel_size: 0.5
-        min_eigen_value: 0.01
-        sigma_num: 3
-        beam_err: 0.02
-        dept_err: 0.05
-        layer_init_num: [5, 5, 5, 5, 5]
-        max_points_num: 50
+      # VIO parameters
+      vio:
+        normal_en: true
+        inverse_composition_en: true
         max_iterations: 5
+        img_point_cov: 0.001
+        raycast_en: false
+        exposure_estimate_en: false
+        inv_expo_cov: 0.001
+        grid_size: 30
+        grid_n_width: 5
+        grid_n_height: 5
+        patch_pyrimid_level: 4
+        patch_size: 8
+        outlier_threshold: 20
+
+      # Time offset
+      time_offset:
+        exposure_time_init: 0.0
+        img_time_offset: 0.0
+        imu_time_offset: 0.0
+        lidar_time_offset: 0.0
+
+      # UAV parameters
+      uav:
+        imu_rate_odom: 200
+        gravity_align_en: true
+
+      evo:
+        seq_name: "livo_sim"
+        pose_output_en: false
 
       # IMU parameters
       imu:
         gyr_cov: 0.001
         acc_cov: 0.001
-        inv_expo_cov: 0.001
+        imu_int_frame: 0
+        imu_en: true
+        gravity_est_en: true
+        ba_bg_est_en: true
 
-      # Extrinsic calibration (identity - for simulation, replace with real calibration)
-      extrin_calib:
-        extrinsic_T: [0, 0, 0]
-        extrinsic_R: [1, 0, 0, 0, 1, 0, 0, 0, 1]
-        Pcl: [0, 0, 0]
-        Rcl: [1, 0, 0, 0, 1, 0, 0, 0, 1]
-
-      # Publish options
-      publish:
-        blind_rgb_points: 0.01
-        pub_effect_point_en: false
-        pub_plane_en: false
-
-      # Debug
-      debug:
-        plot_time: -10
-        frame_cnt: 6
+      # LiDAR preprocessing
+      preprocess:
+        blind: 0.01
+        filter_size_surf: 0.5
+        hilti_en: false
+        lidar_type: 2  # 2=VELO16 (VLP-16)
+        scan_line: 16
+        point_filter_num: 3
+        feature_extract_enabled: true
 
       # PCD save
       pcd_save:
+        interval: -1
         pcd_save_en: false
-        filter_size_pcd: 0.5
+        type: 0
         colmap_output_en: false
+        filter_size_pcd: 0.5
 
       # Image save
       image_save:
         img_save_en: false
         interval: 1
 
-      # Miscellaneous
-      ros_driver_fix_en: false
-      hilti_en: false
+      # Extrinsic calibration (identity - for simulation)
+      extrin_calib:
+        extrinsic_T: [0, 0, 0]
+        extrinsic_R: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+        Pcl: [0, 0, 0]
+        Rcl: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+
+      # Debug
+      debug:
+        plot_time: -10
+        frame_cnt: 6
+
+      # Publish
+      publish:
+        blind_rgb_points: 0.01
+        pub_scan_num: 1
+        pub_effect_point_en: false
+        dense_map_en: false

@@ -53,7 +53,7 @@ void LIVMapper::readParameters(rclcpp::Node::SharedPtr nh)
   GET_PARAM(nh, "common.lid_topic", lid_topic, "/livox/lidar");
   GET_PARAM(nh, "common.imu_topic", imu_topic, "/livox/imu");
   GET_PARAM(nh, "common.ros_driver_bug_fix", ros_driver_fix_en, false);
-  GET_PARAM(nh, "common.img_en", img_en, 1);
+  GET_PARAM(nh, "common.img_en", img_en, 0);  // default 0 = LIO mode (no camera)
   GET_PARAM(nh, "common.lidar_en", lidar_en, 1);
   GET_PARAM(nh, "common.img_topic", img_topic, "/left_camera/image");
 
@@ -126,26 +126,28 @@ void LIVMapper::initializeComponents()
   voxelmap_manager->extT_ << VEC_FROM_ARRAY(extrinT);
   voxelmap_manager->extR_ << MAT_FROM_ARRAY(extrinR);
 
-  if (!vk::camera_loader::loadFromRosNs(nh_, "laserMapping", vio_manager->cam)) throw std::runtime_error("Camera model not correctly specified.");
+  if (img_en) {
+    if (!vk::camera_loader::loadFromRosNs(nh_, "laserMapping", vio_manager->cam)) throw std::runtime_error("Camera model not correctly specified.");
 
-  vio_manager->grid_size = grid_size;
-  vio_manager->patch_size = patch_size;
-  vio_manager->outlier_threshold = outlier_threshold;
-  vio_manager->setImuToLidarExtrinsic(extT, extR);
-  vio_manager->setLidarToCameraExtrinsic(cameraextrinR, cameraextrinT);
-  vio_manager->state = &_state;
-  vio_manager->state_propagat = &state_propagat;
-  vio_manager->max_iterations = max_iterations;
-  vio_manager->img_point_cov = IMG_POINT_COV;
-  vio_manager->normal_en = normal_en;
-  vio_manager->inverse_composition_en = inverse_composition_en;
-  vio_manager->raycast_en = raycast_en;
-  vio_manager->grid_n_width = grid_n_width;
-  vio_manager->grid_n_height = grid_n_height;
-  vio_manager->patch_pyrimid_level = patch_pyrimid_level;
-  vio_manager->exposure_estimate_en = exposure_estimate_en;
-  vio_manager->colmap_output_en = colmap_output_en;
-  vio_manager->initializeVIO();
+    vio_manager->grid_size = grid_size;
+    vio_manager->patch_size = patch_size;
+    vio_manager->outlier_threshold = outlier_threshold;
+    vio_manager->setImuToLidarExtrinsic(extT, extR);
+    vio_manager->setLidarToCameraExtrinsic(cameraextrinR, cameraextrinT);
+    vio_manager->state = &_state;
+    vio_manager->state_propagat = &state_propagat;
+    vio_manager->max_iterations = max_iterations;
+    vio_manager->img_point_cov = IMG_POINT_COV;
+    vio_manager->normal_en = normal_en;
+    vio_manager->inverse_composition_en = inverse_composition_en;
+    vio_manager->raycast_en = raycast_en;
+    vio_manager->grid_n_width = grid_n_width;
+    vio_manager->grid_n_height = grid_n_height;
+    vio_manager->patch_pyrimid_level = patch_pyrimid_level;
+    vio_manager->exposure_estimate_en = exposure_estimate_en;
+    vio_manager->colmap_output_en = colmap_output_en;
+    vio_manager->initializeVIO();
+  }
 
   p_imu->set_extrinsic(extT, extR);
   p_imu->set_gyr_cov_scale(V3D(gyr_cov, gyr_cov, gyr_cov));
