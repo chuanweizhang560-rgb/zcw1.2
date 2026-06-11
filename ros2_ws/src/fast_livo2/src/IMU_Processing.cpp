@@ -487,7 +487,11 @@ void ImuProcess::UndistortPcl(LidarMeasureGroup &lidar_meas, StatesGroup &state_
   //   cout<<endl<<"UndistortPcl size:"<<IMUpose.size()<<endl;
   //   cout<<"Undistorted pcl_out.size: "<<pcl_out.size()
   //          <<"lidar_meas.size: "<<lidar_meas.lidar->points.size()<<endl;
-  if (pcl_wait_proc.points.size() < 1) return;
+  if (pcl_wait_proc.points.size() < 1) {
+    printf("[DEBUG] UndistortPcl: pcl_wait_proc empty! lidar_meas.pcl_proc_cur->points: %zu, lidar_meas.lidar->points: %zu\n",
+           lidar_meas.pcl_proc_cur->points.size(), lidar_meas.lidar->points.size());
+    return;
+  }
 
   /*** undistort each lidar point (backward propagation), ONLY working for LIO
    * update ***/

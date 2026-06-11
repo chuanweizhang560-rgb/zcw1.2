@@ -1,8 +1,8 @@
 # ZCW 电力巡检多无人机研究工作流
 
-版本：`v0.1`
+版本：`v0.2`
 
-状态：待执行前确认
+状态：执行中（Phase 8.2）
 
 ## 0. 已确认的边界
 
@@ -157,12 +157,14 @@
 - 每架无人机运行独立的 LVI-SLAM 实例（单机定位）
 - 初始位姿已知（基站坐标），后续全凭 SLAM 推算
 - SLAM 输出：6-DOF 位姿 + 稠密/稀疏地图
-- **选定方案：LVI-SAM**（TixiaoShan, MIT, ICRA 2021）
-  - 紧耦合 LiDAR-Visual-Inertial 因子图优化
-  - VIS（视觉-惯导子系统）+ LIS（LiDAR-惯导子系统）
-  - 单子系统失效时另一系统可独立工作
-  - ROS 2 移植版：[Pihz-26/LVI-SAM_ROS2](https://github.com/Pihz-26/LVI-SAM_ROS2)
-- 传感器配置：LiDAR（模拟 Ouster/VLP-16）+ 双目相机 + IMU
+- **选定方案：FAST-LIVO2**（HKU-MARS, T-RO 2024）
+  - 直接法 LiDAR-Visual-Inertial 融合（无需特征匹配）
+  - LIO（LiDAR-惯导子系统）省去激光特征提取环节
+  - VIO（视觉-惯导子系统）基于直接法光度误差
+  - 视觉故障时自动退化为 LIO-only 模式
+  - 已完成为 ROS 2 Humble 的完整适配（代码位于 `ros2_ws/src/fast_livo2/`）
+  - 已验证 LIO-only 模式全栈运行（LiDAR+IMU → 位姿+地图输出）
+- 传感器配置：LiDAR（VLP-16 模拟）+ 双目相机（预留）+ IMU（PX4/MAVROS）
 
 ### 4.2 建图架构
 
@@ -797,6 +799,36 @@ RL 策略的观测（每个智能体）建议包含：
 - 控制链路完全断开 Gazebo 真值
 - 定位误差在可接受范围内
 
+#### 8.1 SLAM ROS 2 适配（已完成 ✅）
+
+- FAST-LIVO2 核心算法迁移 ROS 1→ROS 2（~200 处 API 转换）
+- LIO-only 模式稳定运行（LIVMapper img_en=0, initializeVIO 条件化）
+- 传感器模型：`iris_stereo_velodyne`（VLP-16 LiDAR + 双目 + IMU）
+- 全栈验证通过：gzserver → iris_stereo_velodyne → PX4 → MAVROS → FAST-LIVO2
+- 输出：`/aft_mapped_to_init` `/cloud_registered` `/Laser_map` `/path`
+- 快捷：`zcw-livo-full`（全栈一键启动）
+
+#### 8.2 SLAM 位姿接入控制链（待完成）
+
+1. 创建 `slam_pose_bridge` 节点：订阅 `/aft_mapped_to_init` → 发布为 PX4 可用的视觉位姿（`/mavros/vision_pose/pose`）
+2. 配置 PX4 EKF2 接受外部视觉位姿（`EKF2_AID_MASK=24`）
+3. 修改 `cable_tracker`/`inspect_control` 使用 SLAM 位姿替代 Gazebo `/gazebo/link_states` / MAVROS `/local_position/pose`
+4. 验证单机基于 SLAM 定位的闭环绕飞
+
+#### 8.3 多机 FAST-LIVO2 实例扩展
+
+1. 为每架 UAV 生成独立命名空间的 FAST-LIVO2 实例
+2. 各实例订阅各自命名空间下的 LiDAR/IMU 话题
+3. 各实例输出命名空间隔离的 SLAM 话题
+4. 验证 4 机同时运行 FAST-LIVO2 的资源消耗和稳定性
+
+#### 8.4 单机 SLAM + 建图验证
+
+1. 手动飞行收集 SLAM 数据
+2. 记录 SLAM 定位误差（相对 Gazebo 真值）
+3. 确认 `/Laser_map` 和 `/cloud_registered` 在飞行时的建图质量
+4. 评估 SLAM 丢帧/回复能力
+
 ### 阶段 9：增量建图 + 多机地图共享
 
 交付物：
@@ -810,6 +842,34 @@ RL 策略的观测（每个智能体）建议包含：
 - 地图从空开始，飞行中逐步填充
 - 多机地图可合并
 - 地图可作为 RL 观测
+
+#### 9.1 增量地图服务器
+
+1. 创建 `map_server` 节点
+2. 订阅各机 `/Laser_map` / `/cloud_registered` 点云流
+3. 以体素占用网格（`nav_msgs/OccupancyGrid`）或 TSDF 存储全局地图
+4. 从空地图开始，每帧点云融入全局地图
+5. 提供地图查询服务（某点是否已知、是否为障碍物）
+
+#### 9.2 多机地图融合
+
+1. 基于各机 SLAM 的相对位姿将子图变换到全局坐标系
+2. 实现增量合并逻辑：新数据融入、重叠区域去重
+3. 发布融合后的全局地图供规划层使用
+4. 验证双机 + 四机地图合并效果
+
+#### 9.3 地图作为 RL 观测
+
+1. 将全局地图降采样编码为固定维度的特征向量（CNN 编码器或直接展平）
+2. 集成到已有的 `CableTrackingEnv`
+3. 扩展 RL 观测空间：地图 + 位姿 + 任务进度
+4. 训练具备地图感知的 PPO 策略（探索 vs 任务权衡）
+
+#### 9.4 地图增量更新频率优化
+
+1. 建图更新频率调整：`10-30 Hz`（SLAM 内部）→ `1-2 Hz`（规划层接口）
+2. 带宽受限时的增量同步策略（差异压缩、兴趣区域切片）
+3. 地图按可探索区域动态裁剪，不无限增长
 
 ### 阶段 10：完整链路集成（SLAM + 建图 + 任务 + MAPPO）
 
@@ -830,8 +890,8 @@ RL 策略的观测（每个智能体）建议包含：
 下面这几个点会直接影响第一版实现，我建议在动手前最后确认一次：
 
 1. 仿真最终是只锁 `Gazebo 11`，还是同时保留 `Gazebo Sim` 的迁移分支。
-2. SLAM 最终选型：已定为 **LVI-SAM**（TixiaoShan），ROS 2 移植版本待验证。
-3. 地图表示方式：体素占用网格、TSDF 或 ESDF。
+2. SLAM 最终选型：已定为 **FAST-LIVO2**（HKU-MARS），ROS 2 适配已完成。
+3. 地图表示方式：基于 FAST-LIVO2 体素地图 → nav_msgs/OccupancyGrid。
 4. 多机编队扩张计划：完成 4 机单编队后，扩展到多编队的预期时间点。
 
 ## 13. 执行与仓库管理约定
@@ -891,7 +951,6 @@ RL 策略的观测（每个智能体）建议包含：
 - [ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3)
 - [VINS-Fusion](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion)
 - [DroidSLAM](https://github.com/princeton-vl/DroidSLAM)
-- [LVI-SAM (TixiaoShan, ICRA 2021)](https://github.com/TixiaoShan/LVI-SAM)
-- [LVI-SAM_ROS2 (Pihz-26)](https://github.com/Pihz-26/LVI-SAM_ROS2)
+- [FAST-LIVO2 (HKU-MARS, T-RO 2024)](https://github.com/hku-mars/FAST-LIVO2)
 - [Ouster OS0-64 LiDAR Gazebo 模型](https://github.com/SteveMacenski/ouster_example)
 - [PX4 EKF2 视觉位姿融合](https://docs.px4.io/main/en/advanced_config/tuning_the_ecl_ekf.html)

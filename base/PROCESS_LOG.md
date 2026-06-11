@@ -365,3 +365,46 @@ ros2 launch zcw_offboard test_minimal.launch.py
   - IMU: 50Hz via MAVROS
   - 输出: `/aft_mapped_to_init`(位姿) `/cloud_registered`(注册点云) `/Laser_map`(激光地图) `/path`(轨迹) `/cloud_effected`(有效特征) `/LIVO2/imu_propagate`(IMU传播)
 - **livo_config.yaml** 更新: `imu_topic: "/mavros/imu/data"`
+
+## 2026-06-11 — 阶段 8.2：FAST-LIVO2 → EKF2 全数据流验证 ✅
+
+### 关键修复：LiDAR PointCloud2 字段类型
+- Gazebo CPU ray VLP-16 输出的 PointCloud2 字段声明与实际数据布局不匹配
+- **报错**: `Failed to find match for field 'time'` (PCL fromROSMsg 找不到 time 字段)
+- **根因**: velodyne 插件声明 `time` 字段为 FLOAT32，但 PCL `velodyne_ros::Point` 需要精确对应
+- **修复**: `lidar_relay.py` 重新打包 PointCloud2，保留 `time` 字段 (FLOAT32, offset=18)
+- **结果**: `point_step=22`, len(`fields`)=6: `x,y,z,intensity,ring,time` — PCL 转换正常
+
+### 关键发现：MAVROS + IMU 是 FAST-LIVO2 LIO 模式的前提
+- **FAST-LIVO2 LIO 模式** (`slam_mode_=ONLY_LIO=1`): `sync_packages()` 需要 `imu_buffer` 不为空才能通过等待
+- **FAST-LIVO2 LO 模式** (`slam_mode_=ONLY_LO=0`): `case ONLY_LO` 处理逻辑中不等待 IMU，但 `run()` 循环的 `processImu()` 调用在 `imu_en=false` 时静默跳过，不影响主流程
+- **实际验证**: 仅有 LiDAR 时 FAST-LIVO2 `run()` 中 `sync_packages()` 永远返回 false，不进入处理循环
+- **结论**: FAST-LIVO2 必须运行在 LIO 模式 (LiDAR + IMU)，pure LO 模式在代码中未正常工作
+
+### 全数据流验证结果 ✅
+```
+LiDAR(VLP-16) → lidar_relay → FAST-LIVO2(LIO) → /aft_mapped_to_init
+                                                  → vision_pose_relay → /mavros/vision_pose/pose
+```
+- FAST-LIVO2 有效特征: ~600-700 effective features/frame (初始帧 0→617，后续帧波动 0~696)
+- SLAM 位姿: FAST-LIVO2 持续输出 `/aft_mapped_to_init`（带位置/姿态估计）
+- Vision Pose: vision_pose_relay 成功转发到 `/mavros/vision_pose/pose` ✅
+- PX4 MAVROS 配置: `EKF2_GPS_CTRL=0`(禁用GPS) `EKF2_HGT_REF=3`(视觉高度) `EKF2_EV_CTRL=15`(全视觉融合)
+
+### 待做
+- [ ] EKF2 视觉融合调参：ekf2 missing data 预检警告待解决（需 `COM_ARM_EKF` 阈值匹配）
+- [ ] 多机 SLAM 地图共享 (Phase 9)
+- [ ] SLAM + 任务 + MAPPO 全链路 (Phase 10)
+
+### 新文件
+- `ros2_ws/src/zcw_offboard/scripts/vision_pose_relay.py`: FAST-LIVO2 位姿 → MAVROS 视觉位姿转发
+
+### 配置文件
+- `scripts/start_livo_full.sh`: 更新为单模型方案（含 relay + vision_pose_relay 自动启动）
+- `livo_config.yaml`: 参数完整（含 extrin_calib, preprocess, common）
+
+### 持久记忆更新
+- FAST-LIVO2 必须 LIO 模式（需要 MAVROS IMU），pure LO 有 sync 问题
+- `lidar_relay.py` 必须输出6字段（含 time/ring）否则 PCL 转换失败
+- MAVROS vision_pose 插件自动转发 `/mavros/vision_pose/pose` 到 PX4
+- 环境变量: `LD_LIBRARY_PATH` 需含 `/opt/ros/humble/lib`(libfmt) + 排除 conda lib 冲突

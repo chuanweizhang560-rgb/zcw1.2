@@ -286,7 +286,7 @@ void Preprocess::velodyne_handler(const sensor_msgs::msg::PointCloud2::ConstShar
       added_pt.y = pl_orig.points[i].y;
       added_pt.z = pl_orig.points[i].z;
       added_pt.intensity = pl_orig.points[i].intensity;
-      added_pt.curvature = pl_orig.points[i].time / 1000.0; // units: ms
+      added_pt.curvature = pl_orig.points[i].time * 1000.0; // units: ms (Gazebo VLP-16 outputs time in seconds)
 
       if (!given_offset_time)
       {
@@ -349,7 +349,7 @@ void Preprocess::velodyne_handler(const sensor_msgs::msg::PointCloud2::ConstShar
       added_pt.y = pl_orig.points[i].y;
       added_pt.z = pl_orig.points[i].z;
       added_pt.intensity = pl_orig.points[i].intensity;
-      added_pt.curvature = pl_orig.points[i].time / 1000.0;
+      added_pt.curvature = pl_orig.points[i].time * 1000.0; // units: ms (Gazebo VLP-16 outputs time in seconds)
 
       if (!given_offset_time)
       {

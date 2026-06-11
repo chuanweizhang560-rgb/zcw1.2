@@ -123,16 +123,23 @@ zcw-track-rl
 source /home/travis/zcw/1.2/setup.bash
 
 # 方式 1: 一键全栈验证（推荐）
+# 启动: gzserver → iris_stereo_velodyne → PX4 → MAVROS → lidar_relay → vision_pose_relay → FAST-LIVO2
 zcw-livo-full
 
 # 方式 2: 单机启动（需已有传感器数据）
 zcw-livo
 
 # 模型: iris_stereo_velodyne (VLP-16 + 双目 + IMU)
-# LiDAR: /velodyne_laser_plugin/out
+# LiDAR: /velodyne_laser_plugin/out → lidar_relay → /velodyne/points_raw (6字段: x,y,z,intensity,ring,time)
 # IMU: /mavros/imu/data (50Hz, MAVROS 必须用 ros2 run 直接启动)
-# 输出: /aft_mapped_to_init /cloud_registered /Laser_map /path /LIVO2/imu_propagate
-# 注意事项: FAST-LIVO2 + MAVROS 都需 use_sim_time:=True, config 需完整 extrin_calib
+# SLAM 输出: /aft_mapped_to_init /cloud_registered /Laser_map /path /LIVO2/imu_propagate
+# Vision Pose: /aft_mapped_to_init → vision_pose_relay → /mavros/vision_pose/pose
+# 注意事项:
+#   - FAST-LIVO2 + MAVROS 都需 use_sim_time:=True
+#   - config 需完整 extrin_calib
+#   - LD_LIBRARY_PATH 需含 /opt/ros/humble/lib (libfmt)
+#   - FAST-LIVO2 需 LIO 模式 (MAVROS IMU 必须运行), pure LO 模式有 sync 问题
+#   - lidar_relay 必须输出6字段含 time+ring, 否则 PCL 转换失败
 ```
 
 ## 快速启动（四机协同 / Phase 6）

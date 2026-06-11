@@ -372,12 +372,14 @@ void LIVMapper::handleLIO()
   if (!lidar_map_inited) 
   {
     lidar_map_inited = true;
-    voxelmap_manager->BuildVoxelMap();
+    state_propagat = _state;
   }
 
   double t1 = omp_get_wtime();
+  fprintf(stderr, "[DBG] StateEstimation\n");
 
   voxelmap_manager->StateEstimation(state_propagat);
+  fprintf(stderr, "[DBG] StateEstimation done\n");
   _state = voxelmap_manager->state_;
   _pv_list = voxelmap_manager->pv_list_;
 
@@ -1282,13 +1284,32 @@ void LIVMapper::publish_effect_world(const rclcpp::Publisher<sensor_msgs::msg::P
 
 template <typename T> void LIVMapper::set_posestamp(T &out)
 {
-  out.position.x = _state.pos_end(0);
-  out.position.y = _state.pos_end(1);
-  out.position.z = _state.pos_end(2);
-  out.orientation.x = geoQuat.x;
-  out.orientation.y = geoQuat.y;
-  out.orientation.z = geoQuat.z;
-  out.orientation.w = geoQuat.w;
+  if (std::isnan(_state.pos_end(0)) || std::isnan(_state.pos_end(1)) || std::isnan(_state.pos_end(2)))
+  {
+    out.position.x = 0.0;
+    out.position.y = 0.0;
+    out.position.z = 0.0;
+  }
+  else
+  {
+    out.position.x = _state.pos_end(0);
+    out.position.y = _state.pos_end(1);
+    out.position.z = _state.pos_end(2);
+  }
+  if (std::isnan(geoQuat.x) || std::isnan(geoQuat.y) || std::isnan(geoQuat.z) || std::isnan(geoQuat.w))
+  {
+    out.orientation.x = 0.0;
+    out.orientation.y = 0.0;
+    out.orientation.z = 0.0;
+    out.orientation.w = 1.0;
+  }
+  else
+  {
+    out.orientation.x = geoQuat.x;
+    out.orientation.y = geoQuat.y;
+    out.orientation.z = geoQuat.z;
+    out.orientation.w = geoQuat.w;
+  }
 }
 
 void LIVMapper::publish_odometry(const rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr pubOdomAftMapped)
