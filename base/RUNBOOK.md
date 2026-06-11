@@ -140,6 +140,27 @@ zcw-livo
 #   - LD_LIBRARY_PATH 需含 /opt/ros/humble/lib (libfmt)
 #   - FAST-LIVO2 需 LIO 模式 (MAVROS IMU 必须运行), pure LO 模式有 sync 问题
 #   - lidar_relay 必须输出6字段含 time+ring, 否则 PCL 转换失败
+
+## 快速启动（地图服务 / Phase 9）
+
+### 增量地图服务器
+```bash
+source /home/travis/zcw/1.2/setup.bash
+zcw-map-server
+
+# 订阅: /cloud_registered (FAST-LIVO2 注册点云)
+# 发布: /global_map (nav_msgs/OccupancyGrid, 200x200 @ 0.5m)
+# 重置: ros2 service call /map_server/reset_map std_srvs/srv/SetBool "{data: true}"
+```
+
+### 完整 SLAM + 建图启动
+```bash
+# 终端 1: SLAM 全栈
+zcw-livo-full
+
+# 终端 2: 地图服务器
+zcw-map-server
+```
 ```
 
 ## 快速启动（四机协同 / Phase 6）

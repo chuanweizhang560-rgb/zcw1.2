@@ -92,10 +92,12 @@ echo "    zcw-role        - 角色分配器"
 echo "    zcw-explore     - 探索控制器"
 echo "    zcw-reserve     - 待命控制器"
 echo "    zcw-track-rl    - RL 电缆跟踪 (PPO)"
-echo "    zcw-livo        - FAST-LIVO2 单机启动（LiDAR+IMU，需已有数据源）
-    zcw-livo-full   - FAST-LIVO2 全栈验证（Gazebo+PX4+MAVROS+FAST-LIVO2）"
+echo "    zcw-livo        - FAST-LIVO2 单机启动（LiDAR+IMU，需已有数据源）"
+echo "    zcw-livo-full   - FAST-LIVO2 全栈验证（Gazebo+PX4+MAVROS+FAST-LIVO2）"
+echo "    zcw-map-server  - 增量地图服务器 (sub /cloud_registered, pub /global_map)"
 
-# FAST-LIVO2 aliases
+# FAST-LIVO2 + Phase 9 aliases
 alias zcw-livo="LD_LIBRARY_PATH=\"/home/travis/zcw/1.2/ros2_ws/install/vikit_common/lib:/home/travis/zcw/1.2/ros2_ws/install/vikit_ros/lib:\$LD_LIBRARY_PATH\" /home/travis/zcw/1.2/ros2_ws/build/fast_livo2/fast_livo2 --ros-args -p use_sim_time:=True --params-file /home/travis/zcw/1.2/ros2_ws/src/fast_livo2/config/livo_config.yaml"
+alias zcw-map-server='/usr/bin/python3 ${ZCW_ROOT}/ros2_ws/src/zcw_offboard/scripts/map_server.py'
 
 alias zcw-livo-full='bash /home/travis/zcw/1.2/scripts/start_livo_full.sh'

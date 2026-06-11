@@ -392,9 +392,27 @@ LiDAR(VLP-16) → lidar_relay → FAST-LIVO2(LIO) → /aft_mapped_to_init
 - PX4 MAVROS 配置: `EKF2_GPS_CTRL=0`(禁用GPS) `EKF2_HGT_REF=3`(视觉高度) `EKF2_EV_CTRL=15`(全视觉融合)
 
 ### 待做
-- [ ] EKF2 视觉融合调参：ekf2 missing data 预检警告待解决（需 `COM_ARM_EKF` 阈值匹配）
+- [x] Phase 8.2 待做：**EKF2 视觉融合调参** — vision_pose_relay 输出已验证，MAVLink 转发环节需排查
+- [ ] **EKF2 视觉融合**：MAVROS→PX4 的 MAVLink VISION_POSITION_ESTIMATE 转发未成功，需排查 QoS/plugin 参数
 - [ ] 多机 SLAM 地图共享 (Phase 9)
-- [ ] SLAM + 任务 + MAPPO 全链路 (Phase 10)
+
+## 2026-06-11 — 阶段 9.1：增量地图服务器 (map_server) ✅
+
+### 已完成
+- 创建 `map_server.py` — ROS 2 Python 节点
+  - 订阅 FAST-LIVO2 `/cloud_registered`（/Laser_map 在 ROS 2 适配中未实际发布）
+  - 维护 `200×200` 体素占用网格（分辨率 `0.5m`，范围 `[-50,-50]` 到 `[50,50]`）
+  - 对数几率 (log-odds) 增量更新，hit=0.7, miss=0.4
+  - 每 1s 发布 `nav_msgs/OccupancyGrid` 到 `/global_map`
+  - 提供 `/map_server/reset_map` 服务重置地图
+- `setup.bash` 添加 `zcw-map-server` 快捷命令
+- 发现：FAST-LIVO2 `/Laser_map` publisher 只创建未调用，实际地图输出走 `/cloud_registered`
+
+### 待做
+- [ ] 实机验证 map_server 在 live SLAM 数据流下的建图效果（需手动运行 `zcw-livo-full` + `zcw-map-server`）
+- [ ] 阶段 9.2：多机地图融合
+- [ ] 阶段 9.3：地图作为 RL 观测
+- [ ] 阶段 9.4：地图更新频率优化
 
 ### 新文件
 - `ros2_ws/src/zcw_offboard/scripts/vision_pose_relay.py`: FAST-LIVO2 位姿 → MAVROS 视觉位姿转发
