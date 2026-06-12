@@ -428,3 +428,43 @@ LiDAR(VLP-16) → lidar_relay → FAST-LIVO2(LIO) → /aft_mapped_to_init
 - `lidar_relay.py` 必须输出6字段（含 time/ring）否则 PCL 转换失败
 - MAVROS vision_pose 插件自动转发 `/mavros/vision_pose/pose` 到 PX4
 - 环境变量: `LD_LIBRARY_PATH` 需含 `/opt/ros/humble/lib`(libfmt) + 排除 conda lib 冲突
+
+## 2026-06-12 — SLAM 全栈可视化验证中断
+
+### 状态
+Gazebo GUI (cable_inspection.world) + rviz2 SLAM 可视化同时启动验证中。
+
+### 目前跑通的部分
+1. ✅ gzserver + iris_stereo_velodyne (VLP-16 LiDAR + 双目 + IMU) — CPU 35%, 2.9GB RAM
+2. ✅ PX4 SITL — 已连接仿真器，"Simulator connected"
+3. ✅ MAVROS — 墙钟模式已连接，IMU 数据活跃
+4. ✅ FAST-LIVO2 (LIO mode) — 输出 /aft_mapped_to_init, /cloud_registered, /Laser_map
+5. ✅ map_server — 增量地图 /global_map
+6. ✅ LiDAR relay + vision_pose_relay
+
+### Blockers — 待下个 session 修复
+
+1. **`iris_stereo_velodyne` 模型引用了在线模型库** — Gazebo 启动时访问 `http://models.gazebosim.org` 下载模型（`drc_practice_blue_cylinder`, `yosemite` 等），网络慢/不通导致启动慢和警告。  
+   → 解法：将所有外网引用模型下载到本地 `assets/models/` 并确保 SDF 只引用本地路径，设置 `GAZEBO_MODEL_DATABASE_URI=""`
+   → 已添加 `GAZEBO_MODEL_DATABASE_URI=""` 到 setup.bash（见线 107）
+
+2. **PX4 拒绝 arm — "Preflight Fail: ekf2 missing data" + "ignoring CMD with same SYS/COMP ID"**  
+   - `COM_ARM_WO_GPS=1` 已通过 MAVROS 设置成功  
+   - 但 arm 命令一直 ack timeout  
+   - `ros2 param set` 部分参数超时（某些参数不存在）  
+   - PX4 日志显示 `ignoring CMD with same SYS/COMP (1/1) ID` — 说明 component_id 冲突  
+   - 尝试 `system_id=1, component_id=200` 但超时未验证  
+   → 解法：[下次] 用 `component_id=200` + 墙钟模式 MAVROS + setpoint 流持续5s 后再 arm
+
+3. **FAST-LIVO2 依赖 conda 的 libfmt.so.12**  
+   - 系统只有 `libfmt.so.8`，conda 有 `libfmt.so.12`  
+   - 启动 FAST-LIVO2 时必须显式加 `LD_LIBRARY_PATH="/home/travis/miniconda3/lib:..."`  
+   → 记录在案，已验证可用
+
+4. **MAVROS use_sim_time 导致时间同步失败**  
+   - 墙钟模式 MAVROS 可以正常连接和发送命令  
+   - 用 `use_sim_time:=True` 时出现 TM: RTT too high 和 CMD ack timeout  
+   → 解法：墙钟模式 arm + OFFBOARD → 让无人机起飞后 → 重启 MAVROS 改 sim-time 模式给 FAST-LIVO2 用
+
+### 下一步
+- 修复 ARM blockage → 起飞无人机 → rviz2 看 FAST-LIVO2 收敛效果 → 完整流程提交
