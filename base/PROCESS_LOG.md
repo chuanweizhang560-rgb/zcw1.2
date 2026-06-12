@@ -444,9 +444,8 @@ Gazebo GUI (cable_inspection.world) + rviz2 SLAM 可视化同时启动验证中�
 
 ### Blockers — 待下个 session 修复
 
-1. **`iris_stereo_velodyne` 模型引用了在线模型库** — Gazebo 启动时访问 `http://models.gazebosim.org` 下载模型（`drc_practice_blue_cylinder`, `yosemite` 等），网络慢/不通导致启动慢和警告。  
-   → 解法：将所有外网引用模型下载到本地 `assets/models/` 并确保 SDF 只引用本地路径，设置 `GAZEBO_MODEL_DATABASE_URI=""`
-   → 已添加 `GAZEBO_MODEL_DATABASE_URI=""` 到 setup.bash（见线 107）
+1. ~~**`iris_stereo_velodyne` 模型引用了在线模型库**~~ — ✅ 已修复。`cable_inspection.world` 中 `model://asphalt_plane` 不在本地安装，导致 Gazebo 尝试从 `models.gazebosim.org` 下载（`drc_practice_blue_cylinder`, `yosemite` 为无关的并发请求）。已替换为本地已有的 `model://ground_plane`。  
+   → 零在线依赖，设置 `GAZEBO_MODEL_DATABASE_URI=""`（见 setup.bash:107）
 
 2. **PX4 拒绝 arm — "Preflight Fail: ekf2 missing data" + "ignoring CMD with same SYS/COMP ID"**  
    - `COM_ARM_WO_GPS=1` 已通过 MAVROS 设置成功  
