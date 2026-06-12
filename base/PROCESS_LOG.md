@@ -406,7 +406,9 @@ LiDAR(VLP-16) → lidar_relay → FAST-LIVO2(LIO) → /aft_mapped_to_init
   - 每 1s 发布 `nav_msgs/OccupancyGrid` 到 `/global_map`
   - 提供 `/map_server/reset_map` 服务重置地图
 - `setup.bash` 添加 `zcw-map-server` 快捷命令
+- **实机验证通过**：FAST-LIVO2 全栈（+MAVROS PX4 lidar_relay）+ map_server 同时运行，/global_map 发布有效占用网格 ✅
 - 发现：FAST-LIVO2 `/Laser_map` publisher 只创建未调用，实际地图输出走 `/cloud_registered`
+- 修复：`pc2.read_points_numpy` 替换 `list(pc2.read_points(...))`，避免结构化数组索引错误
 
 ### 待做
 - [ ] 实机验证 map_server 在 live SLAM 数据流下的建图效果（需手动运行 `zcw-livo-full` + `zcw-map-server`）

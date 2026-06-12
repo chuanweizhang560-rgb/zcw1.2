@@ -57,17 +57,16 @@ class MapServer(Node):
 
     def cb(self, msg):
         try:
-            pts = list(pc2.read_points(msg, field_names=('x', 'y', 'z'),
-                                        skip_nans=True))
+            pts = pc2.read_points_numpy(msg, field_names=('x', 'y', 'z'),
+                                         skip_nans=True)
         except Exception as e:
             self.get_logger().warn(f'pc2 read failed: {e}')
             return
-        if not pts:
+        if pts.shape[0] == 0:
             return
-        pts = np.array(pts)
         mask = (pts[:, 2] >= self.min_z) & (pts[:, 2] <= self.max_z)
         pts = pts[mask]
-        if pts.size == 0:
+        if pts.shape[0] == 0:
             return
         gx = ((pts[:, 0] - self.ox) / self.res).astype(int)
         gy = ((pts[:, 1] - self.oy) / self.res).astype(int)
