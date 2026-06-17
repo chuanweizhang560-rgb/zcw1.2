@@ -163,6 +163,43 @@ zcw-map-server
 ```
 ```
 
+## 快速启动（SLAM 全栈可视化 / Fallback 模式）
+
+```bash
+# 前提: FAST-LIVO2 LIO 当前发散，用 MAVROS local_position 替代
+
+# 终端 1: gzserver + iris
+source ~/zcw/1.2/setup.bash
+./scripts/start_all.sh
+
+# 终端 2: PX4（FIFO 保持连接）
+source ~/zcw/1.2/setup.bash
+cd ~/zcw/1.2/PX4-Autopilot/build/px4_sitl_default/rootfs && rm -rf 0
+mkfifo /tmp/px4_stdin
+setsid ~/zcw/1.2/PX4-Autopilot/build/px4_sitl_default/bin/px4 -d ~/zcw/1.2/PX4-Autopilot/build/px4_sitl_default/etc <> /tmp/px4_stdin
+
+# 终端 3: 可视化
+source ~/zcw/1.2/setup.bash
+# MAVROS (component_id=200 避免与 PX4 冲突)
+setsid ros2 run mavros mavros_node --ros-args -p fcu_url:=udp://:14540@127.0.0.1:14580 -p system_id:=1 -p component_id:=200 -p use_sim_time:=True < /dev/null
+# relays (必须 /usr/bin/python3)
+setsid /usr/bin/python3 ~/zcw/1.2/ros2_ws/src/zcw_offboard/scripts/lidar_relay.py < /dev/null
+setsid /usr/bin/python3 ~/zcw/1.2/ros2_ws/src/zcw_offboard/scripts/local_pose_to_odom.py < /dev/null
+setsid /usr/bin/python3 ~/zcw/1.2/ros2_ws/src/zcw_offboard/scripts/map_server.py < /dev/null
+# static TFs
+ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 map base_link &
+ros2 run tf2_ros static_transform_publisher 0.05 0 0 0 0 0 base_link velodyne_link &
+ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 base_link camera_init &
+# rviz2
+rviz2 -d ~/zcw/1.2/scripts/slam_viz.rviz &
+# gazebo GUI
+gzclient --verbose &
+```
+
+### 已知问题
+- PX4 arm 拒绝: Preflight Fail, 需 MAVLink param bypass
+- FAST-LIVO2 发散: 即使 VLP-16 时间戳修复, LIO 仍无收敛
+
 ## 快速启动（四机协同 / Phase 6）
 
 ```bash

@@ -1,0 +1,43 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+  - Class: rviz_common/Views
+    Name: Views
+Visualization Manager:
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Value: true
+    - Alpha: 0.5
+      Class: rviz_default_plugins/PointCloud2
+      Color Transformer: AxisColor
+      Decay Time: 30
+      Name: /velodyne
+      Topic:
+        Value: /velodyne_laser_plugin/out
+      Value: true
+    - Alpha: 0.8
+      Class: rviz_default_plugins/Map
+      Name: /global_map
+      Topic:
+        Value: /global_map
+      Value: true
+    - Alpha: 0.5
+      Class: rviz_default_plugins/PointCloud2
+      Color Transformer: AxisColor
+      Name: /cloud_registered
+      Topic:
+        Value: /velodyne/points_raw
+      Value: true
+    - Class: rviz_default_plugins/Odometry
+      Name: /mavros/local_position
+      Topic:
+        Value: /mavros/local_position/odom
+      Value: true
+  Global Options:
+    Fixed Frame: map
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 30
+      TargetFrame: base_link

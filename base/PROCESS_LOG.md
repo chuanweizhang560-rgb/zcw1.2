@@ -465,5 +465,51 @@ Gazebo GUI (cable_inspection.world) + rviz2 SLAM 可视化同时启动验证中�
    - 用 `use_sim_time:=True` 时出现 TM: RTT too high 和 CMD ack timeout  
    → 解法：墙钟模式 arm + OFFBOARD → 让无人机起飞后 → 重启 MAVROS 改 sim-time 模式给 FAST-LIVO2 用
 
-### 下一步
-- 修复 ARM blockage → 起飞无人机 → rviz2 看 FAST-LIVO2 收敛效果 → 完整流程提交
+## 2026-06-17 — SLAM 全栈可视化验证成功 ✅
+
+### 全栈运行进程
+```
+1. gzserver + cable_inspection.world            — PX4模型已嵌入world文件
+2. PX4 SITL (built/px4_sitl_default/bin/px4)   — FIFO stdin 永不退出
+3. MAVROS (component_id=200, use_sim_time)      — 连接成功，IMU 50Hz
+4. lidar_relay (VLP-16 时间插值)                 — 6-field PointCloud2 10Hz
+5. local_pose_to_odom (pose→odom relay)         — /af_mapped_to_init Odometry
+6. map_server (增量log-odds占用网格)             — /global_map 200×200@0.5m
+7. static TFs (map→base_link, velodyne_link, camera_init)
+8. rviz2 (slam_viz.rviz, Fixed Frame=map)
+9. gzclient (GAZEBO_MODEL_DATABASE_URI="" 禁用在线库)
+```
+
+### 关键突破
+- **PX4 持久化**：用 FIFO + `<>` 模式替代 `tail -f /dev/null`，PX4 永不退出
+  ```bash
+  mkfifo /tmp/px4_stdin
+  exec ./px4 -d ../etc <> /tmp/px4_stdin
+  ```
+- **进程持久化**：所有后台进程用 `setsid <cmd> < /dev/null > /tmp/xxx.log 2>&1 &`
+- **Python 版本**：所有 ROS 2 Python 节点用 `/usr/bin/python3`（系统 Python 3.10），不用 conda python3.13
+- **VLP-16 时间插值**：`lidar_relay.py` 为每个扫描点插值 0.0~0.1s 时间戳，解决 Gazebo VLP-16 输出 time=0 导致 FAST-LIVO2 发散的问题
+- **rviz2 可视化**：VLP-16 原始点云 + MAVROS local_position/pose + 增量占用网格，全部正常显示 ✅
+
+### 启动脚本
+- `scripts/start_all.sh` — gzserver + spawn iris（不跑 PX4）
+- 后续分成 3 步手动启动（见持久记忆）
+
+### 已知问题（待处理）
+1. **PX4 arm 失败**：MAVROS component_id=200 连接成功，但 arm 命令被 PX4 拒绝
+   - `Preflight Fail: height estimate error`
+   - `Preflight Fail: system power unavailable`
+   - 需设置: `COM_ARM_EKF_HGT=0, CBRK_SUPPLY_CHK=894281` 等
+   - MAVROS `/mavros/param/set` 服务存在但不响应（MAVLink param 转发阻塞）
+   - 需通过 raw MAVLink socket 或 pymavlink 设置
+
+2. **MAVROS param service 不响应**
+   - `/mavros/param/set` service listed but "waiting for service to become available..."
+   - 可能是 MAVLink 参数转发到 PX4 时阻塞
+
+3. **FAST-LIVO2 仍然发散**
+   - 即使 VLP-16 时间戳修复，LIO 仍 "No point!!!" + NaN 输出
+   - 改用 MAVROS local_position 做临时可视化来源
+
+### 提交
+- 本次启动日志记录: (当前提交)

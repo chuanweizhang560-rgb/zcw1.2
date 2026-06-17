@@ -27,6 +27,7 @@ __clean_path() {
 __clean_path LD_LIBRARY_PATH
 __clean_path GAZEBO_MODEL_PATH
 __clean_path GAZEBO_PLUGIN_PATH
+export GAZEBO_MODEL_DATABASE_URI=""
 __clean_path AMENT_PREFIX_PATH
 __clean_path PYTHONPATH
 __clean_path CMAKE_PREFIX_PATH
@@ -45,12 +46,15 @@ source "${ZCW_ROOT}/PX4-Autopilot/Tools/simulation/gazebo-classic/setup_gazebo.b
     "${ZCW_ROOT}/PX4-Autopilot/build/px4_sitl_default"
 
 # 4. 添加项目自定义模型路径
-export GAZEBO_MODEL_PATH="${ZCW_ROOT}/assets/models:${GAZEBO_MODEL_PATH}"
+[[ ":$GAZEBO_MODEL_PATH:" != *":${ZCW_ROOT}/assets/models:"* ]] && export GAZEBO_MODEL_PATH="${ZCW_ROOT}/assets/models:${GAZEBO_MODEL_PATH}"
 
 # 5. Source ROS 2 workspace
 if [ -f "${ZCW_ROOT}/ros2_ws/install/local_setup.bash" ]; then
     source "${ZCW_ROOT}/ros2_ws/install/local_setup.bash"
 fi
+
+# 6. 添加 FAST-LIVO2 所需库路径
+export LD_LIBRARY_PATH="${ZCW_ROOT}/ros2_ws/install/vikit_common/lib:${ZCW_ROOT}/ros2_ws/install/vikit_ros/lib:/opt/ros/humble/lib:${LD_LIBRARY_PATH}"
 
 # 5. 项目别名
 alias zcw-px4='cd ${ZCW_ROOT}/PX4-Autopilot && PX4_SITL_WORLD=tower HEADLESS=1 make px4_sitl gazebo-classic_iris'
@@ -97,7 +101,7 @@ echo "    zcw-livo-full   - FAST-LIVO2 全栈验证（Gazebo+PX4+MAVROS+FAST-LIV
 echo "    zcw-map-server  - 增量地图服务器 (sub /cloud_registered, pub /global_map)"
 
 # FAST-LIVO2 + Phase 9 aliases
-alias zcw-livo="LD_LIBRARY_PATH=\"/home/travis/zcw/1.2/ros2_ws/install/vikit_common/lib:/home/travis/zcw/1.2/ros2_ws/install/vikit_ros/lib:\$LD_LIBRARY_PATH\" /home/travis/zcw/1.2/ros2_ws/build/fast_livo2/fast_livo2 --ros-args -p use_sim_time:=True --params-file /home/travis/zcw/1.2/ros2_ws/src/fast_livo2/config/livo_config.yaml"
+alias zcw-livo="LD_LIBRARY_PATH=\"/home/travis/zcw/1.2/ros2_ws/install/vikit_common/lib:/home/travis/zcw/1.2/ros2_ws/install/vikit_ros/lib:/opt/ros/humble/lib:\$LD_LIBRARY_PATH\" /home/travis/zcw/1.2/ros2_ws/install/fast_livo2/lib/fast_livo2/fast_livo2 --ros-args -p use_sim_time:=True --params-file /home/travis/zcw/1.2/ros2_ws/src/fast_livo2/config/livo_config.yaml"
 alias zcw-map-server='/usr/bin/python3 ${ZCW_ROOT}/ros2_ws/src/zcw_offboard/scripts/map_server.py'
 
 alias zcw-livo-full='bash /home/travis/zcw/1.2/scripts/start_livo_full.sh'

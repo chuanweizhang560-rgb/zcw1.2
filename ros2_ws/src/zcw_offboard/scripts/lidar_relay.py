@@ -19,6 +19,7 @@ class LidarRelay(Node):
         raw = msg.data.tobytes() if hasattr(msg.data, 'tobytes') else bytes(msg.data)
         npts = msg.width * msg.height
         step = msg.point_step  # 22 bytes
+        scan_duration = 0.1  # VLP-16 10Hz, 0.1s per full scan
 
         # new_step = 22 bytes: x(F32) y(F32) z(F32) intensity(F32) ring(U16) time(F32)
         new_step = 22
@@ -28,7 +29,8 @@ class LidarRelay(Node):
             if off + 22 <= len(raw):
                 x, y, z, intensity = struct.unpack_from('<ffff', raw, off)
                 ring_data = struct.unpack_from('<I', raw, off + 16)[0]
-                time_data = struct.unpack_from('<f', raw, off + 18)[0]
+                # Gazebo VLP-16 plugin time field is always 0 → compute sweep progress
+                time_data = (i / npts) * scan_duration  # linear 0~0.1s across scan
                 struct.pack_into('<ffffHf', out, i * new_step,
                                  x, y, z, intensity, ring_data & 0xFFFF, time_data)
 

@@ -40,7 +40,7 @@ class MapServer(Node):
         self.update_count = 0
 
         self.sub = self.create_subscription(
-            PointCloud2, '/cloud_registered', self.cb, 10)
+            PointCloud2, '/velodyne/points_raw', self.cb, 10)
         self.pub = self.create_publisher(OccupancyGrid, '/global_map', 10)
         self.srv = self.create_service(SetBool, '~/reset_map', self.reset_cb)
 
@@ -48,7 +48,7 @@ class MapServer(Node):
         self.get_logger().info(
             f'map_server started: {self.w}x{self.h} x {self.res}m '
             f'origin=({self.ox},{self.oy}) z=[{self.min_z},{self.max_z}]'
-            f' sub=/cloud_registered pub=/global_map')
+            f' sub=/velodyne/points_raw pub=/global_map')
 
     def world_to_grid(self, x, y):
         gx = int((x - self.ox) / self.res)
@@ -57,8 +57,7 @@ class MapServer(Node):
 
     def cb(self, msg):
         try:
-            pts = pc2.read_points_numpy(msg, field_names=('x', 'y', 'z'),
-                                         skip_nans=True)
+            pts = np.array([(p[0], p[1], p[2]) for p in pc2.read_points(msg, field_names=('x', 'y', 'z'), skip_nans=True)])
         except Exception as e:
             self.get_logger().warn(f'pc2 read failed: {e}')
             return
