@@ -496,20 +496,62 @@ Gazebo GUI (cable_inspection.world) + rviz2 SLAM 可视化同时启动验证中�
 - 后续分成 3 步手动启动（见持久记忆）
 
 ### 已知问题（待处理）
-1. **PX4 arm 失败**：MAVROS component_id=200 连接成功，但 arm 命令被 PX4 拒绝
-   - `Preflight Fail: height estimate error`
-   - `Preflight Fail: system power unavailable`
-   - 需设置: `COM_ARM_EKF_HGT=0, CBRK_SUPPLY_CHK=894281` 等
-   - MAVROS `/mavros/param/set` 服务存在但不响应（MAVLink param 转发阻塞）
-   - 需通过 raw MAVLink socket 或 pymavlink 设置
-
-2. **MAVROS param service 不响应**
-   - `/mavros/param/set` service listed but "waiting for service to become available..."
-   - 可能是 MAVLink 参数转发到 PX4 时阻塞
-
-3. **FAST-LIVO2 仍然发散**
+1. **FAST-LIVO2 仍然发散**
    - 即使 VLP-16 时间戳修复，LIO 仍 "No point!!!" + NaN 输出
    - 改用 MAVROS local_position 做临时可视化来源
+
+## 2026-06-18 — Phase 8: PX4 SITL Arm+OFFBOARD Takeoff 突破
+
+### 问题描述
+PX4 SITL gazebo-classic v1.14 持续拒绝 arm 命令（"Preflight Fail: height estimate error"），即使设置所有 bypass 参数也无法通过 MAVROS 外部 arm。
+
+### 根因分析
+PX4 SITL arm 失败是一个**多层级问题**，需要逐层修复：
+
+1. **MAVROS component_id 冲突**：MAVROS 默认 component_id=1 与 PX4 内部相同，PX4 静默丢弃所有来自同 SYS/COMP 的外部命令。修复：`component_id:=200`
+2. **auto-preflight-disarming**：`commander arm -f` 可以强制 arm，但 `COM_DISARM_PRFLT`（默认 10s）会在 arm 后自动上锁。修复：`COM_DISARM_PRFLT=0`
+3. **RC loss failsafe**：arm 后 PX4 检测到无 RC 信号，立即触发 failsafe → AUTO.LAND。修复：`NAV_RCL_ACT=0`
+4. **EKF2 height divergence**：gazebo-classic IMU 噪声导致 EKF2 高度估计发散。修复：`COM_ARM_EKF_HGT/VEL/POS=100`
+5. **PX4 MAVLink UDP 14580 连接窗口**：PX4 SITL 启动后约 10s 停止接受新 MAVLink 连接。修复：PX4 和 MAVROS 需同时启动
+
+### 关键修复清单（rcS ZCW section）
+```
+param set COM_ARM_EKF_HGT 100
+param set COM_ARM_EKF_VEL 100
+param set COM_ARM_EKF_POS 100
+param set COM_DISARM_PRFLT 0      # 禁用 auto-preflight-disarming — 核心!
+param set COM_ARM_WO_GPS 1
+param set COM_FAIL_ACT_T 0
+param set NAV_DLL_ACT 0
+param set GF_ACTION 0
+param set COM_LOW_BAT_ACT 0
+param set COM_RCL_EXCEPT 4         # OFFBOARD 模式忽略 RC loss
+param set COM_OBL_RC_ACT 5         # OFFBOARD loss → Hold
+param set COM_OF_LOSS_T 10         # OFFBOARD loss timeout 10s
+param set NAV_RCL_ACT 0            # 禁用 RC loss failsafe — 否则 arm 后立即触发!
+```
+
+### 验证结果
+- ✅ MAVROS 连接成功（component_id=200）
+- ✅ PX4 arm 成功（MAVROS CommandBool）
+- ✅ OFFBOARD takeoff 到 10m
+- ✅ 稳定悬停（z: 9.99m，持续 setpoint stream）
+- ❌ FAST-LIVO2 仍发散（独立问题，不影响飞行）
+
+### 启动脚本
+- `scripts/hover.py` — 持续 OFFBOARD 悬停（50Hz setpoint stream）
+- `scripts/takeoff.py` — 一次性起飞+30s 悬停
+
+### PX4 启动流程
+1. gzserver + spawn iris
+2. PX4 SITL（setsid + sleep infinity pipe，从 rootfs 目录启动）
+3. MAVROS（component_id=200, use_sim_time:=True）
+4. hover.py（5s setpoints → OFFBOARD → arm → 持续 stream）
+
+### 注意事项
+- 删除 `parameters.bson` 确保 rcS `param set` 生效
+- OFFBOARD 需要持续 setpoint stream（≥2Hz），停止后 OFFBOARD loss → LOITER → land
+- `from rclpy.node import Node` 而非 `rclpy.Node`（后者在某些 Python 环境下报 AttributeError）
 
 ### 提交
 - 本次启动日志记录: (当前提交)
